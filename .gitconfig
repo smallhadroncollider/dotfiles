@@ -1,0 +1,24 @@
+[user]
+	name = Mark Wales
+	email = mark@smallhadroncollider.com
+[push]
+	default = simple
+[color]
+	ui = true
+[core]
+	editor = vim
+	excludesfile = /Users/mark/.gitignore
+	attributesfile = /Users/mark/.gitattributes
+[help]
+	autocorrect = 1
+[gitflow "branch"]
+    master = master
+    develop = develop
+[gitflow "prefix"]
+    feature = feature/
+    release = release/
+    hotfix = hotfix/
+    support = support/
+    versiontag = v
+[diff "exif"]
+	textconv = exiftool
