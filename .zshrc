@@ -1,4 +1,13 @@
 ##########################
+# Requirements
+#########################
+
+# brew install grc
+# brew install zsh-syntax-highlighting
+# brew install terminal-notifier
+# brew install reattach-to-user-namespace
+
+##########################
 # General Setup
 #########################
 
