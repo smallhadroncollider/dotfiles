@@ -1,16 +1,16 @@
 [user]
-	name = Mark Wales
-	email = mark@smallhadroncollider.com
+    name = Mark Wales
+    email = mark@smallhadroncollider.com
 [push]
-	default = simple
+    default = simple
 [color]
-	ui = true
+    ui = true
 [core]
-	editor = vim
-	excludesfile = /Users/mark/.gitignore
-	attributesfile = /Users/mark/.gitattributes
+    editor = vim
+    excludesfile = /Users/mark/.gitignore
+    attributesfile = /Users/mark/.gitattributes
 [help]
-	autocorrect = 1
+    autocorrect = 1
 [gitflow "branch"]
     master = master
     develop = develop
@@ -21,4 +21,4 @@
     support = support/
     versiontag = v
 [diff "exif"]
-	textconv = exiftool
+    textconv = exiftool
