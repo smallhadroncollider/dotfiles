@@ -2,10 +2,10 @@
 # Requirements
 #########################
 
-# brew install grc
-# brew install zsh-syntax-highlighting
-# brew install terminal-notifier
-# brew install reattach-to-user-namespace
+# gem install tmuxinator - tmux session configuration
+# brew install grc - colouring terminal output
+# brew install zsh-syntax-highlighting - highlighting commands
+# brew install terminal-notifier - mac notification centre from terminal
 
 ##########################
 # General Setup
