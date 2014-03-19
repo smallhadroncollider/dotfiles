@@ -2,7 +2,7 @@
 
 ## Zsh
 
-Using `oh-my-zsh` for plugins and themes. Paths are in `.zshenv` and functions aliases in `.zshrc`.
+Using `oh-my-zsh` for plugins and themes. Paths are in `.zshenv` and functions/aliases in `.zshrc`.
 
 ## Git
 
