@@ -34,6 +34,19 @@ export KEYTIMEOUT=1
 # Functions
 #########################
 
+# Gif
+gif() {
+    convert $1 -delay 1x10 -coalesce -layers OptimizeTransparency $2
+}
+
+# Lowercase
+lowercase() {
+    find $1 -type f | while read name;
+        do loName=$(echo "${name}" | tr '[:upper:]' '[:lower:]')
+        mv "$name" "$loName"
+    done
+}
+
 # Log a file with mac notifications
 # run `brew install terminal-notifier` to install terminal-notifier
 logit () {
@@ -161,6 +174,15 @@ rebase() {
     fi
 }
 
+# Git Show
+show() {
+    if [[ $# -eq 1 ]]; then
+        git show HEAD@{$1}
+    else
+        git show HEAD
+    fi
+}
+
 ##########################
 # Aliases
 #########################
@@ -172,6 +194,7 @@ alias touch="create"
 # Shell aliases
 alias mkdir="mkdir -p" # Create a directory recursively by default
 alias here="open ./" # Open the cwd in Finder
+alias cpd="cp -ivR" # Copy directory
 
 # ZSH aliases
 alias refresh="source ~/.zshenv; source ~/.zshrc" # Reload zsh settings
@@ -202,6 +225,7 @@ alias oil-p="FUEL_ENV=production oil"
 
 # Tmux aliases
 alias list="tmux list-sessions"
+alias kill="tmux kill-session -t $(tmux display-message -p '#S')"
 alias new="mux copy Default"
 alias start="mux start"
 
@@ -251,3 +275,4 @@ alias support="git flow support"
 # Misc
 alias boilerplate="git clone git@github.com:smallhadroncollider/boilerplate.git"
 alias chromeXorigin="killall Google\ Chrome 2> /dev/null; open -a Google\ Chrome --args -disable-web-security"
+alias diff="diff -wbiBy -W $COLUMNS --suppress-common-lines"
