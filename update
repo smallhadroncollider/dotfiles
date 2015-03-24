@@ -1,0 +1,4 @@
+cp ~/Dropbox/.mackup/.vimrc vim/
+cp ~/Dropbox/.mackup/.zsh* zsh/
+cp ~/Dropbox/.mackup/.git* git/
+cp ~/Dropbox/.mackup/.tmux.conf tmux/
