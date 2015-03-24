@@ -60,6 +60,7 @@ set wildmenu
 
 " reload files that are changed
 set autoread
+au WinEnter * checktime " check for updated file when window changed
 
 " Don't redraw while executing macros (good performance config)
 set lazyredraw
@@ -110,7 +111,6 @@ set softtabstop=4
 
 set ai "Auto indent
 set si "Smart indent
-set wrap "Wrap lines
 set number " line numbers
 
 " Backspace navigation
@@ -217,16 +217,17 @@ let g:syntastic_scss_scss_lint_args = "-c ~/.scss-lint.yml" " Set scss-lint conf
 
 " CtrlP
 let g:ctrlp_map = '<c-p>'
-let g:ctrlp_custom_ignore = { 'dir':  '\v[\/](\.git|vendor|node_modules|build)$', 'file': '\v\.(css)$' }
 map <c-o> :CtrlPBuffer<CR>
+let g:ctrlp_custom_ignore = { 'dir':  '\v[\/](\.git|vendor|node_modules|build)$', 'file': '\v\.(css)$' }
 let g:ctrlp_match_window = 'bottom,order:ttb'
+let g:ctrlp_show_hidden = 1
 
 if executable('ag')
     " Use ag over grep
     set grepprg=ag\ --nogroup\ --nocolor
 
     " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+    let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""' 
 
     " ag is fast enough that CtrlP doesn't need to cache
     let g:ctrlp_use_caching = 0
