@@ -1,0 +1,34 @@
+[user]
+    name = Mark Wales
+    email = mark@smallhadroncollider.com
+[push]
+    default = simple
+[color]
+    ui = true
+[core]
+    editor = vim
+    ignorecase = false
+    excludesfile = /Users/mark/.gitignore
+    attributesfile = /Users/mark/.gitattributes
+[help]
+    autocorrect = 1
+[gitflow "branch"]
+    master = master
+    develop = develop
+[gitflow "prefix"]
+    feature = feature/
+    release = release/
+    hotfix = hotfix/
+    support = support/
+    versiontag =
+[diff "exif"]
+    textconv = exiftool
+[rerere]
+	enabled = true
+	autoupdate = true
+[diff]
+	submodule = log
+[status]
+	submoduleSummary = true
+[fetch]
+	recurseSubmodules = on-demand

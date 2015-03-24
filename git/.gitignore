@@ -1,0 +1,11 @@
+*~
+*.bak
+Thumbs.db
+desktop.ini
+.DS_Store
+.apdisk
+.fseventsd/
+.vagrant
+.Trashes
+.trashes
+*.sublime-workspace

@@ -1,0 +1,265 @@
+##########################
+# Functions
+#########################
+
+github () {
+    git clone "git@github.com:$1" "$2" --recurse-submodules
+}
+
+branch-clean () {
+    git checkout --orphan "$1"
+    git rm --cached $(git ls-files)
+}
+
+frm () {
+    find . -path "$1" -print0 | xargs -0 rm
+}
+
+new-domain() {
+    ssh shc -t "sudo new-domain $1"
+}
+
+server() {
+    if [[ $# -eq 1 ]]; then
+        php -S localhost:"$1"
+    else
+        php -S localhost:8000
+    fi
+}
+
+pskill() {
+    ps -e | grep -v grep | grep "$1" | awk '{print $1}' | xargs \kill
+}
+
+eject() {
+    hdiutil eject "/Volumes/Time Machine HD No. 1" 2> /dev/null
+    hdiutil eject "/Volumes/Time Machine HD No. 2" 2> /dev/null
+    hdiutil eject "/Volumes/Storage HD" 2> /dev/null
+}
+
+display_error() {
+    echo "$fg[red]$1$reset_color"
+}
+
+rename() {
+    for i in *"$1"*; do
+        echo "$i" | sed "s/$1/$2/" | xargs mv "$i"
+    done
+}
+
+scp() {
+    rsync -a --partial --exclude=".svn/" --exclude=".git/" --progress --rsh=ssh "$1" "$2"
+}
+
+ours() {
+    git checkout --ours "$1" && git add "$1"
+}
+
+theirs() {
+    git checkout --theirs "$1" && git add "$1"
+}
+
+# Gif
+gif() {
+    convert $1 -delay 1x10 -coalesce -layers OptimizeTransparency $2
+}
+
+# Lowercase
+lowercase() {
+    find $1 -type f | while read name;
+        do loName=$(echo "${name}" | tr '[:upper:]' '[:lower:]')
+        mv "$name" "$loName"
+    done
+}
+
+# Log a file with mac notifications
+# run `brew install terminal-notifier` to install terminal-notifier
+logit () {
+    tail -F $1 | while read line; do
+        echo "$line"
+        # echo "$line" | sed $'s/$/\a/' # Emit the bell sound
+        echo "$line" | sed 's/[[:space:]]/\\ /g' | xargs -n 1 terminal-notifier -title $2 -message # Show in notification centre
+    done
+}
+
+# Outputs the directory part of a path
+dir () {
+    echo "$1" | sed 's/[^\/]*$//'
+}
+
+# Touch, but creates directories if they don't exist
+create () {
+    dir=$(dir "$1")
+
+    if [[ -n $dir && ! (-d $dir) ]]
+        then mkdir -p "$dir"
+        echo "Creating directory: $dir"
+    fi
+
+    for i do
+        \touch $i
+    done
+}
+
+# Copy In Place: Copies file from directory to same directory
+cpip () {
+    dir=$(dir "$1")
+
+    for i do
+        if [[ $i != $1 ]]; then
+            cp -v -n "$1" "$dir$i"
+        fi
+    done
+}
+
+# Move In Place: Moves file in directory to same directory
+mvip () {
+    dir=$(dir "$1")
+    mv -n -v "$1" "$dir$2"
+}
+
+# Tmux Layout: displays the current Tmux window layout and adds it to the clipboard
+layout () {
+    tmux list-windows | awk '{print $7}' |  sed 's/\]$//' | pbcopy
+    pbpaste
+    echo '[tmux layout copied to clipboard]'
+}
+
+# Creates a new Tmux session from within an existing Tmux session
+tnew () {
+    if [[ $# -eq 1 ]]; then
+        TMUX= tmux new-session -d -s $1
+        tmux switch-client -t $1
+        cd ~
+    else
+        display_error 'Session name required'
+    fi
+}
+
+_stop() {
+    git push 2> /dev/null
+    vagrant "$1" 2> /dev/null
+    tmux kill-session -t "$(tmux display-message -p '#S')"
+}
+
+# Stops the current Tmux session and closes any Vagrant machines that might be running
+stop () {
+    _stop "halt"
+}
+
+# Stops the current Tmux session and destroys any Vagrant machines that might be running
+finish () {
+    _stop "destroy"
+}
+
+# Runs a single command in Vagrant SSH
+vssh () {
+    command="$@"
+    vagrant ssh -c "cd /vagrant; sudo $command"
+}
+
+composer() {
+    command="$1"
+    dir="$2"
+    vagrant ssh -c "cd /usr/local/bin && sudo ./composer self-update; cd /var/www/$2 && composer $command -vvv"
+}
+
+# Finds a given filename in children directories
+where() {
+    find . -type f -name "*$1*" -not -path \*node_modules\* | sed 's/^\.\///'
+}
+
+infile() {
+    find . -type f -exec grep -il "$1" {} \;
+}
+
+# Commands
+cmd() {
+    echo "
+    ^xx^yy      Replaces \`xx\` with \`yy\`
+    !!          Get the previous command
+    sudo !!     Run previous command with sudo
+    !*          Gets all arguments from previous command
+    !\$          Gets last argument from previous command
+    !^          Gets first argument from previous command
+    !1-4        Gets first four arguments from previous command
+    !:-         Insert the last command without the last argument
+    !?command   Get the last called version of command
+    d           List previous directories
+    1-9         Go to previous directories
+    x           Extract files
+    history     List previous commands
+    !12         Execute command from history No 12
+"
+}
+
+# Number of changed files in git commit
+cfcount() {
+    git diff-tree --no-commit-id --name-only -r $1 | wc -l
+}
+
+# Git rebase x number of stages back - 10 by default
+rebase() {
+    printf "Stash? (y/n): "
+    read -r shouldStash
+
+    if [[ "$shouldStash" = "n" ]]; then
+        shouldStash=false
+    else
+        shouldStash=true
+        stash
+    fi
+
+    log
+
+    printf "Commit #: "
+    read -r commit
+
+    git rebase -i HEAD~$commit
+
+    if [[ $shouldStash -eq true ]]; then
+        unstash > /dev/null
+    fi
+}
+
+restore() {
+    commit=$(git rev-list -n 1 HEAD -- "$1")
+    git checkout "$commit" -- "$1"
+}
+
+migrations() {
+    if [[ $# -eq 1 ]]; then
+        for name in $(ls)
+        do
+            i=$(echo ${name:0:3})
+            mv $name $(printf "%03d\n" $(($i + $1)))$(echo ${name:3})
+        done
+    else
+        display_error 'Increment required'
+    fi
+}
+
+# Git Show
+show() {
+    if [[ $# -eq 1 ]]; then
+        git show HEAD@{$1}
+    else
+        git show HEAD
+    fi
+}
+
+upload-file() {
+    rsync -a --partial --progress --rsh=ssh "$1" "root@smallhadroncollider.com:/var/www/files.smallhadroncollider.com/public/$2"
+    echo "================"
+    echo "Download Link: http://files.smallhadroncollider.com/$2"
+}
+
+git-store() {
+    branch=$(git rev-parse --abbrev-ref HEAD)
+    git checkout -b save-point && git add --all && git commit -m "save point" && git push origin save-point && git checkout "$branch"
+}
+
+git-restore() {
+    branch=$(git rev-parse --abbrev-ref HEAD)
+    git checkout save-point && git reset HEAD@{1} && git checkout "$branch" && git push origin :save-point && git branch -d save-point
+}
