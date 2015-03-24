@@ -1,3 +1,5 @@
+#! /bin/bash
+
 cp ~/Dropbox/.mackup/.vimrc vim/
 cp ~/Dropbox/.mackup/.zsh* zsh/
 cp ~/Dropbox/.mackup/.git* git/
