@@ -3,3 +3,5 @@
 tmp/
 vendor/
 node_modules/
+build/
+fuel/core

@@ -14,6 +14,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'airblade/vim-gitgutter' " Gitbar
 Plugin 'altercation/vim-colors-solarized' " Solarized Colour Scheme
 Plugin 'ap/vim-css-color' " Sets background of Hex colour values
+Plugin 'Arkham/vim-quickfixdo' " perform tasks on quickfix list
 Plugin 'bling/vim-airline' " airline status bar
 Plugin 'christoomey/vim-tmux-navigator' " vim/tmux window navigation
 Plugin 'docunext/closetag.vim' " close HTML tags with C-_
@@ -31,6 +32,7 @@ Plugin 'othree/html5.vim' " html5 syntax highlighting
 Plugin 'pangloss/vim-javascript' " javascript syntax highlighting
 Plugin 'Raimondi/delimitMate' " adds matching end brackets
 Plugin 'rizzatti/dash.vim' " dash integration
+Plugin 'rking/ag.vim' " ag search
 Plugin 'scrooloose/nerdcommenter' " easy comments
 Plugin 'scrooloose/syntastic' " Syntastic - Linter
 Plugin 'shawncplus/phpcomplete.vim' " Better PHP completions
@@ -81,6 +83,7 @@ set noerrorbells
 set novisualbell
 
 " Map \w to close buffer
+nmap <leader><Esc> :lcl<CR>
 nmap <leader>q :lcl<CR>:bd<CR>
 nmap <Leader>Q :bd *<C-a><CR>
 
@@ -121,6 +124,7 @@ set clipboard=unnamed
 
 " Hide rather than close buffers
 set hidden
+set viminfo^=% " save buffers
 
 " undo/command history
 set history=1000         " remember more commands and search history
@@ -198,6 +202,8 @@ endif
 
 " fugitive
 nnoremap å :Gwrite<CR>
+nnoremap ∂ :Gdiff<CR>
+nnoremap ç :Gcommit -m ""<Left>
 nnoremap Ω :Git checkout %<CR><CR>
 
 " Airline
@@ -227,7 +233,7 @@ if executable('ag')
     set grepprg=ag\ --nogroup\ --nocolor
 
     " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-    let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""' 
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -U --hidden -g ""' 
 
     " ag is fast enough that CtrlP doesn't need to cache
     let g:ctrlp_use_caching = 0
