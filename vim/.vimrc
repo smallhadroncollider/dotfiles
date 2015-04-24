@@ -19,10 +19,12 @@ Plugin 'bling/vim-airline' " airline status bar
 Plugin 'christoomey/vim-tmux-navigator' " vim/tmux window navigation
 Plugin 'docunext/closetag.vim' " close HTML tags with C-_
 Plugin 'editorconfig/editorconfig-vim' " EditorConfig support
+Plugin 'embear/vim-localvimrc' " site specific .vimrc files
 Plugin 'FooSoft/vim-argwrap' " wrap/unwrap arguments
 Plugin 'garbas/vim-snipmate' " snippets support
 Plugin 'gregsexton/MatchTag' " Matches HTML tags
 Plugin 'jacquesbh/vim-showmarks' " show marks
+Plugin 'joonty/vim-phpunitqf.git' " phpUnit
 Plugin 'kien/ctrlp.vim' " CtrlP
 Plugin 'Lokaltog/vim-easymotion' " EasyMotion
 Plugin 'maksimr/vim-jsbeautify' " JS beautify
@@ -33,7 +35,6 @@ Plugin 'pangloss/vim-javascript' " javascript syntax highlighting
 Plugin 'Raimondi/delimitMate' " adds matching end brackets
 Plugin 'rizzatti/dash.vim' " dash integration
 Plugin 'rking/ag.vim' " ag search
-Plugin 'scrooloose/nerdcommenter' " easy comments
 Plugin 'scrooloose/syntastic' " Syntastic - Linter
 Plugin 'shawncplus/phpcomplete.vim' " Better PHP completions
 Plugin 'Shougo/neocomplcache.vim' " code completion
@@ -41,8 +42,10 @@ Plugin 'sjl/gundo.vim' " undo browsing
 Plugin 'StanAngeloff/php.vim' " Better PHP syntax highlighting
 Plugin 'taglist.vim' " taglist
 Plugin 'terryma/vim-multiple-cursors' " multiple cursors
+Plugin 'tomtom/tcomment_vim' " smart commenting
 Plugin 'tomtom/tlib_vim'  " required for SnipMate
 Plugin 'tpope/vim-fugitive' " Git support
+Plugin 'tpope/vim-repeat' " better support for repeating motions
 Plugin 'tpope/vim-surround' " Surround
 
 " All of your Plugins must be added before the following line
@@ -66,6 +69,7 @@ au WinEnter * checktime " check for updated file when window changed
 
 " Don't redraw while executing macros (good performance config)
 set lazyredraw
+set updatetime=4000
 
 " Always show current position
 set ruler
@@ -83,9 +87,9 @@ set noerrorbells
 set novisualbell
 
 " Map \w to close buffer
-nmap <leader><Esc> :lcl<CR>
+nmap <leader><Esc> :lcl<CR>:ccl<CR>
 nmap <leader>q :lcl<CR>:bd<CR>
-nmap <Leader>Q :bd *<C-a><CR>
+nmap <Leader>Q :bd *<C-a><CR><CR>
 
 " preferences
 map <Leader>, :e ~/.vimrc<CR>
@@ -124,7 +128,7 @@ set clipboard=unnamed
 
 " Hide rather than close buffers
 set hidden
-set viminfo^=% " save buffers
+" set viminfo^=% " save buffers
 
 " undo/command history
 set history=1000         " remember more commands and search history
@@ -133,19 +137,15 @@ set undofile " store undos between sessions
 set undodir=~/.vim/undo " location to store undo history
 
 " auto apply Vim settings
-if has("autocmd")
-    augroup reload_vimrc " {
-        autocmd!
-        autocmd BufWritePost $MYVIMRC source $MYVIMRC
-    augroup END " }
-endif
+augroup reload_vimrc " {
+    autocmd!
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END " }
 
 " skeleton files 
-if has("autocmd")
-    autocmd BufNewFile index.html 0r ~/.vim/skeleton/index.html
-    autocmd BufNewFile *.js 0r ~/.vim/skeleton/umd.js
-    autocmd BufNewFile *.php 0r ~/.vim/skeleton/class.php
-endif
+autocmd BufNewFile index.html 0r ~/.vim/skeleton/index.html
+autocmd BufNewFile *.js 0r ~/.vim/skeleton/umd.js
+autocmd BufNewFile *.php 0r ~/.vim/skeleton/class.php
 
 " shell options
 set shell=/bin/zsh
@@ -170,7 +170,7 @@ inoremap ;; <End>;<Esc>
 nnoremap ;; A;<Esc>
 
 " Add insert comma shortcut
-inoremap ,, <End>,
+inoremap ,, <End>,<Esc>
 nnoremap ,, A,<Esc>
 
 " turn on file type specific indentation
@@ -182,18 +182,34 @@ set directory=~/.vim/tmp
 
 " filetypes
 " Only do this part when compiled with support for autocommands
-if has("autocmd")
-    " Enable file type detection
-    filetype on
+" Enable file type detection
+filetype on
 
-    " Syntax of these languages is fussy over tabs/spaces
-    autocmd FileType make setlocal ts=4 sts=4 sw=4 noexpandtab
-    autocmd FileType yml setlocal ts=2 sts=2 sw=2
+" Syntax of these languages is fussy over tabs/spaces
+autocmd FileType make setlocal ts=4 sts=4 sw=4 noexpandtab
+autocmd FileType yml setlocal ts=2 sts=2 sw=2
 
-    " Treat .make files as Makefile
-    autocmd BufNewFile,BufRead *.make setfiletype make
-    autocmd BufNewFile,BufRead *.yaml setfiletype yml
+" Treat .make files as Makefile
+autocmd BufNewFile,BufRead Vagrantfile set filetype=ruby
+autocmd BufNewFile,BufRead *.make set filetype=make
+autocmd BufNewFile,BufRead *.yaml set filetype=yml
+
+" create file parent directories if they don't exist
+if !exists("*s:MkNonExDir")
+    function s:MkNonExDir(file, buf)
+        if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
+            let dir=fnamemodify(a:file, ':h')
+            if !isdirectory(dir)
+                call mkdir(dir, 'p')
+            endif
+        endif
+    endfunction
 endif
+
+augroup BWCCreateDir
+    autocmd!
+    autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
+augroup END
 
 
 " =============
@@ -223,6 +239,7 @@ let g:syntastic_scss_scss_lint_args = "-c ~/.scss-lint.yml" " Set scss-lint conf
 
 " CtrlP
 let g:ctrlp_map = '<c-p>'
+let g:ctrlp_working_path_mode = 'a'
 map <c-o> :CtrlPBuffer<CR>
 let g:ctrlp_custom_ignore = { 'dir':  '\v[\/](\.git|vendor|node_modules|build)$', 'file': '\v\.(css)$' }
 let g:ctrlp_match_window = 'bottom,order:ttb'
@@ -258,6 +275,7 @@ let Tlist_Auto_Open=1
 let Tlist_Auto_Update=1
 let Tlist_Use_Right_Window=1
 let Tlist_WinWidth=&columns/3
+let tlist_php_settings='php;c:class;f:function' 
 
 " dash integration
 nmap <silent> <leader>d <Plug>DashSearch
@@ -272,9 +290,23 @@ imap <expr>.. "\<Plug>snipMateNextOrTrigger"
 " JS Beautify
 map <C-f> :call JsBeautify()<CR>
 
+" PHP Unit
+let g:phpunit_cmd = "ssh vagrant '(cd /vagrant/ && ./vendor/bin/phpunit)'"
+
+" lvimrc
+let g:localvimrc_persistent = 1
+
 " Solarized
 syntax enable
 set background=dark
 colorscheme solarized
 highlight clear SignColumn
 call gitgutter#highlight#define_highlights()
+
+" Spell check
+autocmd FileType markdown,html,txt setlocal spell spelllang=en_gb
+:hi SpellBad cterm=underline ctermfg=red
+
+" Highlighting
+:highlight TakeNote ctermfg=15 ctermbg=9
+:match TakeNote /@TODO\|@BUG\|@FIX/

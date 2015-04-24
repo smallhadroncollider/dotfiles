@@ -31,12 +31,6 @@ pskill() {
     ps -e | grep -v grep | grep "$1" | awk '{print $1}' | xargs \kill
 }
 
-eject() {
-    hdiutil eject "/Volumes/Time Machine HD No. 1" 2> /dev/null
-    hdiutil eject "/Volumes/Time Machine HD No. 2" 2> /dev/null
-    hdiutil eject "/Volumes/Storage HD" 2> /dev/null
-}
-
 display_error() {
     echo "$fg[red]$1$reset_color"
 }
@@ -59,11 +53,6 @@ theirs() {
     git checkout --theirs "$1" && git add "$1"
 }
 
-# Gif
-gif() {
-    convert $1 -delay 1x10 -coalesce -layers OptimizeTransparency $2
-}
-
 # Lowercase
 lowercase() {
     find $1 -type f | while read name;
@@ -82,14 +71,9 @@ logit () {
     done
 }
 
-# Outputs the directory part of a path
-dir () {
-    echo "$1" | sed 's/[^\/]*$//'
-}
-
 # Touch, but creates directories if they don't exist
 create () {
-    dir=$(dir "$1")
+    dir=$(dirname "$1")
 
     if [[ -n $dir && ! (-d $dir) ]]
         then mkdir -p "$dir"
@@ -103,7 +87,7 @@ create () {
 
 # Copy In Place: Copies file from directory to same directory
 cpip () {
-    dir=$(dir "$1")
+    dir=$(dirname "$1")
 
     for i do
         if [[ $i != $1 ]]; then
@@ -114,7 +98,7 @@ cpip () {
 
 # Move In Place: Moves file in directory to same directory
 mvip () {
-    dir=$(dir "$1")
+    dir=$(dirname "$1")
     mv -n -v "$1" "$dir$2"
 }
 
@@ -155,13 +139,19 @@ finish () {
 # Runs a single command in Vagrant SSH
 vssh () {
     command="$@"
-    vagrant ssh -c "cd /vagrant; sudo $command"
+    ssh vagrant "cd /vagrant && sudo $command"
 }
 
 composer() {
     command="$1"
     dir="$2"
-    vagrant ssh -c "cd /usr/local/bin && sudo ./composer self-update; cd /var/www/$2 && composer $command -vvv"
+    ssh vagrant "cd /usr/local/bin && sudo ./composer self-update; cd /var/www/$dir && composer $command -vvv"
+}
+
+artisan() {
+    command="$1"
+    dir="$2"
+    ssh vagrant "cd /var/www/$dir && php artisan $command"
 }
 
 # Finds a given filename in children directories
@@ -198,30 +188,6 @@ cfcount() {
     git diff-tree --no-commit-id --name-only -r $1 | wc -l
 }
 
-# Git rebase x number of stages back - 10 by default
-rebase() {
-    printf "Stash? (y/n): "
-    read -r shouldStash
-
-    if [[ "$shouldStash" = "n" ]]; then
-        shouldStash=false
-    else
-        shouldStash=true
-        stash
-    fi
-
-    log
-
-    printf "Commit #: "
-    read -r commit
-
-    git rebase -i HEAD~$commit
-
-    if [[ $shouldStash -eq true ]]; then
-        unstash > /dev/null
-    fi
-}
-
 restore() {
     commit=$(git rev-list -n 1 HEAD -- "$1")
     git checkout "$commit" -- "$1"
@@ -246,20 +212,4 @@ show() {
     else
         git show HEAD
     fi
-}
-
-upload-file() {
-    rsync -a --partial --progress --rsh=ssh "$1" "root@smallhadroncollider.com:/var/www/files.smallhadroncollider.com/public/$2"
-    echo "================"
-    echo "Download Link: http://files.smallhadroncollider.com/$2"
-}
-
-git-store() {
-    branch=$(git rev-parse --abbrev-ref HEAD)
-    git checkout -b save-point && git add --all && git commit -m "save point" && git push origin save-point && git checkout "$branch"
-}
-
-git-restore() {
-    branch=$(git rev-parse --abbrev-ref HEAD)
-    git checkout save-point && git reset HEAD@{1} && git checkout "$branch" && git push origin :save-point && git branch -d save-point
 }
