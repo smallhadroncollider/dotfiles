@@ -13,40 +13,35 @@ Plugin 'gmarik/Vundle.vim'
 
 Plugin 'airblade/vim-gitgutter' " Gitbar
 Plugin 'altercation/vim-colors-solarized' " Solarized Colour Scheme
-Plugin 'ap/vim-css-color' " Sets background of Hex colour values
-Plugin 'Arkham/vim-quickfixdo' " perform tasks on quickfix list
 Plugin 'bling/vim-airline' " airline status bar
 Plugin 'christoomey/vim-tmux-navigator' " vim/tmux window navigation
-Plugin 'docunext/closetag.vim' " close HTML tags with C-_
 Plugin 'editorconfig/editorconfig-vim' " EditorConfig support
-Plugin 'embear/vim-localvimrc' " site specific .vimrc files
 Plugin 'FooSoft/vim-argwrap' " wrap/unwrap arguments
-Plugin 'garbas/vim-snipmate' " snippets support
-Plugin 'gregsexton/MatchTag' " Matches HTML tags
 Plugin 'jacquesbh/vim-showmarks' " show marks
-Plugin 'joonty/vim-phpunitqf.git' " phpUnit
+Plugin 'jaxbot/syntastic-react' 
 Plugin 'kien/ctrlp.vim' " CtrlP
-Plugin 'Lokaltog/vim-easymotion' " EasyMotion
-Plugin 'maksimr/vim-jsbeautify' " JS beautify
-Plugin 'MarcWeber/vim-addon-mw-utils' " required for SnipMate
-Plugin 'nathanaelkane/vim-indent-guides' " adds indent guides - toggle with <Leader>ig
-Plugin 'othree/html5.vim' " html5 syntax highlighting
-Plugin 'pangloss/vim-javascript' " javascript syntax highlighting
+Plugin 'mattn/emmet-vim' " emmet - `ctrl-y ,` to activate
 Plugin 'Raimondi/delimitMate' " adds matching end brackets
-Plugin 'rizzatti/dash.vim' " dash integration
-Plugin 'rking/ag.vim' " ag search
+Plugin 'qpkorr/vim-bufkill' " keeps splits when killing buffers
+Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic' " Syntastic - Linter
-Plugin 'shawncplus/phpcomplete.vim' " Better PHP completions
-Plugin 'Shougo/neocomplcache.vim' " code completion
-Plugin 'sjl/gundo.vim' " undo browsing
-Plugin 'StanAngeloff/php.vim' " Better PHP syntax highlighting
-Plugin 'taglist.vim' " taglist
+Plugin 'sjl/gundo.vim'
+Plugin 'skwp/greplace.vim' " search and replace
 Plugin 'terryma/vim-multiple-cursors' " multiple cursors
 Plugin 'tomtom/tcomment_vim' " smart commenting
-Plugin 'tomtom/tlib_vim'  " required for SnipMate
-Plugin 'tpope/vim-fugitive' " Git support
-Plugin 'tpope/vim-repeat' " better support for repeating motions
-Plugin 'tpope/vim-surround' " Surround
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'vim-scripts/AutoComplPop' 
+Plugin 'xolox/vim-misc' " required for vim sessions
+Plugin 'xolox/vim-session' " vim sessions
+
+" syntax highlighting
+Plugin 'keith/swift.vim'
+Plugin 'mxw/vim-jsx'
+Plugin 'othree/html5.vim' " html5 syntax highlighting
+Plugin 'pangloss/vim-javascript' " javascript syntax highlighting
+Plugin 'raichoo/purescript-vim' " purescript syntax highlighting
+Plugin 'StanAngeloff/php.vim' " Better PHP syntax highlighting
+Plugin 'xsbeats/vim-blade'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -59,6 +54,7 @@ filetype plugin indent on    " required
 
 " Disable Ex mode
 nnoremap Q <nop>
+nnoremap q <nop>
 
 " turn wildmenu on
 set wildmenu
@@ -78,32 +74,44 @@ set cursorline
 " Keep cursor more in middle
 set scrolloff=15
 
-" Invisible characters
-nmap <leader>l :set list!<CR>
-set listchars=tab:▸\ ,eol:¬
-
 " sounds off
 set noerrorbells
 set novisualbell
 
-" Map \w to close buffer
+" Map \q to close buffer
 nmap <leader><Esc> :lcl<CR>:ccl<CR>
-nmap <leader>q :lcl<CR>:bd<CR>
-nmap <Leader>Q :bd *<C-a><CR><CR>
+nmap <leader>q :lcl<CR>:BD<CR>
+nmap <leader>Q :NERDTreeClose<CR>:bd *<C-a><CR><CR>
+nmap <leader>qq :lcl<CR>:bd<CR>
 
 " preferences
-map <Leader>, :e ~/.vimrc<CR>
+map <leader>, :e ~/.vimrc<CR>
+
+" preferences
+map <leader>] :bn<CR>
+map <leader>[ :bp<CR>
 
 " save
-map <Leader>w :w<CR>
+map <leader>w :w<CR>
+map <leader>W :w<CR>
+
+" replace single quotes in selection
+map <leader>" :s/'/"/g<CR>
+
+" sort out tabs
+map <leader><Tab> :'<,'>ret<CR>
+
+" sort
+map <leader>j :'<,'>sort i<CR>
 
 " Highlight search results
 set hlsearch
 set incsearch
-nnoremap <silent> <Leader>/ :nohlsearch<CR> " hide search results with \/
+nnoremap <silent> <leader>/ :nohlsearch<CR> " hide search results with \/
 
 " Set utf8 as standard encoding
 set encoding=utf8
+set fileencoding=utf-8
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
@@ -126,9 +134,11 @@ set backspace=indent,eol,start
 " Use OS clipboard
 set clipboard=unnamed
 
+" add highlighted column at 120
+set colorcolumn=120
+
 " Hide rather than close buffers
 set hidden
-" set viminfo^=% " save buffers
 
 " undo/command history
 set history=1000         " remember more commands and search history
@@ -141,11 +151,6 @@ augroup reload_vimrc " {
     autocmd!
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END " }
-
-" skeleton files 
-autocmd BufNewFile index.html 0r ~/.vim/skeleton/index.html
-autocmd BufNewFile *.js 0r ~/.vim/skeleton/umd.js
-autocmd BufNewFile *.php 0r ~/.vim/skeleton/class.php
 
 " shell options
 set shell=/bin/zsh
@@ -173,24 +178,24 @@ nnoremap ;; A;<Esc>
 inoremap ,, <End>,<Esc>
 nnoremap ,, A,<Esc>
 
-" turn on file type specific indentation
-filetype indent on
+" Add insert tick shortcut
+inoremap <leader><space> <End> ✓<Esc>
+nnoremap <leader><space> A ✓<Esc>
 
 " backups
 set backupdir=~/.vim/tmp
 set directory=~/.vim/tmp
 
-" filetypes
-" Only do this part when compiled with support for autocommands
-" Enable file type detection
-filetype on
-
 " Syntax of these languages is fussy over tabs/spaces
 autocmd FileType make setlocal ts=4 sts=4 sw=4 noexpandtab
 autocmd FileType yml setlocal ts=2 sts=2 sw=2
 
-" Treat .make files as Makefile
+" Non-default file types 
 autocmd BufNewFile,BufRead Vagrantfile set filetype=ruby
+autocmd BufNewFile,BufRead Gemfile set filetype=ruby
+autocmd BufNewFile,BufRead Podfile set filetype=ruby
+autocmd BufNewFile,BufRead Berksfile set filetype=ruby
+autocmd BufNewFile,BufRead Cheffile set filetype=ruby
 autocmd BufNewFile,BufRead *.make set filetype=make
 autocmd BufNewFile,BufRead *.yaml set filetype=yml
 
@@ -211,20 +216,32 @@ augroup BWCCreateDir
     autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
 augroup END
 
+" half window
+nnoremap <leader>h :rightb vnew<cr>
+
+" Grep shortcut
+map <leader>// :grep
+map <leader>s :cw<Esc>
+
+" show marks
+autocmd VimEnter * DoShowMarks!
+
+" Spell check
+autocmd FileType markdown,html,txt setlocal spell spelllang=en_gb
+:hi SpellBad cterm=underline ctermfg=red
+
+" test
+map <leader>t :! bin/tests<Esc>
+
 
 " =============
 " Plugin Config
 " =============
 
-" fugitive
-nnoremap å :Gwrite<CR>
-nnoremap ∂ :Gdiff<CR>
-nnoremap ç :Gcommit -m ""<Left>
-nnoremap Ω :Git checkout %<CR><CR>
-
 " Airline
 set laststatus=2
 let g:airline_powerline_fonts=1
+let g:airline_theme="solarized"
 
 " Syntastic
 set statusline+=%#warningmsg#
@@ -232,10 +249,18 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:syntastic_loc_list_height = 5
+let g:syntastic_auto_loc_list = 2
+let g:syntastic_aggregate_errors = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_scss_scss_lint_args = "-c ~/.scss-lint.yml" " Set scss-lint config file
+let g:syntastic_php_phpcs_args = "--standard=PSR1,PSR2"
+let g:syntastic_php_phpmd_post_args = "codesize,design,unusedcode,naming,/Users/mark/.vim/syntastic/sandi-metz.xml"
+let g:syntastic_error_symbol = "✕"
+let g:syntastic_style_error_symbol = "×"
+let g:syntastic_warning_symbol = "!!"
+let g:syntastic_style_warning_symbol = "!"
+let g:syntastic_javascript_checkers = ["eslint"]
 
 " CtrlP
 let g:ctrlp_map = '<c-p>'
@@ -250,63 +275,54 @@ if executable('ag')
     set grepprg=ag\ --nogroup\ --nocolor
 
     " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -U --hidden -g ""' 
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -U --depth -1 --follow --hidden -g ""'
 
     " ag is fast enough that CtrlP doesn't need to cache
     let g:ctrlp_use_caching = 0
 endif
 
-" Map K to find word under cursor
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-
-" neocomplete
-let g:neocomplcache_enable_at_startup = 1
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
 " Gundo
-nnoremap <Leader>u :GundoToggle<CR>
-
-" show marks
-autocmd VimEnter * DoShowMarks!
-
-" show Tags
-map <Leader>t :TlistToggle<CR>
-let Tlist_Auto_Open=1
-let Tlist_Auto_Update=1
-let Tlist_Use_Right_Window=1
-let Tlist_WinWidth=&columns/3
-let tlist_php_settings='php;c:class;f:function' 
-
-" dash integration
-nmap <silent> <leader>d <Plug>DashSearch
-let g:dash_map = { 'php' : ['php', 'l'], 'javascript': ['ld', 'js'], 'scss': ['css'] }
+nnoremap <leader>u :GundoToggle<CR>
 
 " argwrap
 nnoremap <silent> <leader>a :ArgWrap<CR>
 
-" snipmate
-imap <expr>.. "\<Plug>snipMateNextOrTrigger"
-
-" JS Beautify
-map <C-f> :call JsBeautify()<CR>
-
-" PHP Unit
-let g:phpunit_cmd = "ssh vagrant '(cd /vagrant/ && ./vendor/bin/phpunit)'"
-
-" lvimrc
-let g:localvimrc_persistent = 1
-
 " Solarized
 syntax enable
+set term=screen-256color
 set background=dark
 colorscheme solarized
 highlight clear SignColumn
 call gitgutter#highlight#define_highlights()
 
-" Spell check
-autocmd FileType markdown,html,txt setlocal spell spelllang=en_gb
-:hi SpellBad cterm=underline ctermfg=red
+" NERDtree
+map <leader>n :NERDTreeToggle<CR>
+map <leader>f :NERDTreeFind<CR>
+map <leader>r :vertical res 30<CR>
 
-" Highlighting
-:highlight TakeNote ctermfg=15 ctermbg=9
-:match TakeNote /@TODO\|@BUG\|@FIX/
+" DelimitMate
+au FileType php let b:delimitMate_matchpairs = "(:),[:],{:}"
+
+" AutoComplPop
+inoremap <expr> <C-j> ((pumvisible())?("\<C-n>"):("\<C-j>"))
+inoremap <expr> <C-k> ((pumvisible())?("\<C-p>"):("\<C-k>"))
+
+function! Multiple_cursors_before()
+    exe "AcpLock" 
+endfunction
+
+function! Multiple_cursors_after()
+    exe "AcpUnlock"
+endfunction
+
+" greplace
+set grepprg=ag
+let g:grep_cmd_opts = "--line-numbers --noheading"
+
+" vim sessions
+set sessionoptions-=options
+let g:session_lock_enabled = 0
+let g:session_autoload = "yes"
+let g:session_autosave = "yes"
+let g:session_autosave_periodic = 1
+let g:session_autosave_silent = 1

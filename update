@@ -1,7 +1,7 @@
 #! /bin/bash
 
-cp ~/Dropbox/.mackup/.vimrc vim/
-cp ~/Dropbox/.mackup/.zsh* zsh/
-cp ~/Dropbox/.mackup/.git* git/
-cp ~/Dropbox/.mackup/.tmux.conf tmux/
-cp ~/Dropbox/.mackup/.agignore .
+cp ~/.vimrc vim/
+cp ~/.zsh* zsh/
+cp ~/.git* git/
+cp ~/.tmux.conf tmux/
+cp ~/.agignore .

@@ -5,7 +5,7 @@ desktop.ini
 .DS_Store
 .apdisk
 .fseventsd/
-.vagrant
 .Trashes
 .trashes
-*.sublime-workspace
+.phpcomplete_extended/
+.agignore

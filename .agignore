@@ -5,13 +5,19 @@
 tmp/
 vendor/
 node_modules/
+jspm_packages/
+jspm/
+bower_components/
 build/
 .vagrant/
 fuel/core/
 cookbooks/
+berks-cookbooks/
 
 .DS_Store
 .lock
 .git
 .gitkeep
 Icon
+*.sql
+.agignore

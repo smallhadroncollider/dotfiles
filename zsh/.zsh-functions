@@ -3,7 +3,7 @@
 #########################
 
 github () {
-    git clone "git@github.com:$1" "$2" --recurse-submodules
+    git clone --recurse-submodules "git@github.com:$@"
 }
 
 branch-clean () {
@@ -41,6 +41,12 @@ rename() {
     done
 }
 
+frename() {
+    for i in `where "*$1*"`; do
+        echo "$i" | sed "s/$1/$2/" | xargs mv "$i"
+    done
+}
+
 scp() {
     rsync -a --partial --exclude=".svn/" --exclude=".git/" --progress --rsh=ssh "$1" "$2"
 }
@@ -51,6 +57,15 @@ ours() {
 
 theirs() {
     git checkout --theirs "$1" && git add "$1"
+}
+
+git-undelete() {
+    git checkout $(git rev-list -n 1 HEAD -- "$1")^ -- "$1"
+}
+
+
+log() {
+    git log --color --graph --pretty=format:'%Cgreen%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit $@ | cat -n | less
 }
 
 # Lowercase
@@ -64,16 +79,17 @@ lowercase() {
 # Log a file with mac notifications
 # run `brew install terminal-notifier` to install terminal-notifier
 logit () {
+    clear
     tail -F $1 | while read line; do
         echo "$line"
         # echo "$line" | sed $'s/$/\a/' # Emit the bell sound
-        echo "$line" | sed 's/[[:space:]]/\\ /g' | xargs -n 1 terminal-notifier -title $2 -message # Show in notification centre
+        # echo "$line" | sed 's/[[:space:]]/\\ /g' | xargs -n 1 terminal-notifier -title $2 -message # Show in notification centre
     done
 }
 
 # Touch, but creates directories if they don't exist
 create () {
-    dir=$(dirname "$1")
+    dir=$(dirname "$1")/
 
     if [[ -n $dir && ! (-d $dir) ]]
         then mkdir -p "$dir"
@@ -85,9 +101,16 @@ create () {
     done
 }
 
+# Laravel: create file in app and tests directory
+lt () {
+    filename="$@"
+    create "app/${filename}.php"
+    create "tests/${filename}Test.php"
+}
+
 # Copy In Place: Copies file from directory to same directory
 cpip () {
-    dir=$(dirname "$1")
+    dir=$(dirname "$1")/
 
     for i do
         if [[ $i != $1 ]]; then
@@ -98,7 +121,7 @@ cpip () {
 
 # Move In Place: Moves file in directory to same directory
 mvip () {
-    dir=$(dirname "$1")
+    dir=$(dirname "$1")/
     mv -n -v "$1" "$dir$2"
 }
 
@@ -139,19 +162,13 @@ finish () {
 # Runs a single command in Vagrant SSH
 vssh () {
     command="$@"
-    ssh vagrant "cd /vagrant && sudo $command"
+    ssh -t vagrant "cd /var/www && $command"
 }
 
-composer() {
-    command="$1"
-    dir="$2"
-    ssh vagrant "cd /usr/local/bin && sudo ./composer self-update; cd /var/www/$dir && composer $command -vvv"
-}
-
-artisan() {
-    command="$1"
-    dir="$2"
-    ssh vagrant "cd /var/www/$dir && php artisan $command"
+vsshd () {
+    dir="$1"
+    command="${@:2}"
+    ssh -t vagrant "cd /var/www/$1 && $command"
 }
 
 # Finds a given filename in children directories
@@ -161,26 +178,6 @@ where() {
 
 infile() {
     find . -type f -exec grep -il "$1" {} \;
-}
-
-# Commands
-cmd() {
-    echo "
-    ^xx^yy      Replaces \`xx\` with \`yy\`
-    !!          Get the previous command
-    sudo !!     Run previous command with sudo
-    !*          Gets all arguments from previous command
-    !\$          Gets last argument from previous command
-    !^          Gets first argument from previous command
-    !1-4        Gets first four arguments from previous command
-    !:-         Insert the last command without the last argument
-    !?command   Get the last called version of command
-    d           List previous directories
-    1-9         Go to previous directories
-    x           Extract files
-    history     List previous commands
-    !12         Execute command from history No 12
-"
 }
 
 # Number of changed files in git commit
@@ -193,18 +190,6 @@ restore() {
     git checkout "$commit" -- "$1"
 }
 
-migrations() {
-    if [[ $# -eq 1 ]]; then
-        for name in $(ls)
-        do
-            i=$(echo ${name:0:3})
-            mv $name $(printf "%03d\n" $(($i + $1)))$(echo ${name:3})
-        done
-    else
-        display_error 'Increment required'
-    fi
-}
-
 # Git Show
 show() {
     if [[ $# -eq 1 ]]; then
@@ -212,4 +197,49 @@ show() {
     else
         git show HEAD
     fi
+}
+
+# SSH list
+ssh-list() {
+    for keyfile in ~/.ssh/keys/**
+        do ssh-keygen -l -f "${keyfile}"
+    done | uniq
+}
+
+# Register Virtual Box VMs
+register-vms() {
+    ls ~/VirtualBox\ VMs/**/*.vbox | while read vm; do VBoxManage registervm "$vm"; done;
+}
+
+# Markdown to Slides
+slides() {
+    md="$1"
+    name=$(echo "$md" | cut -f 1 -d '.')
+    command="${@:2}"
+    markdown-to-slides "$md" -o "$name".html -l ~/.markdown-to-slides/template.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js "$command"
+}
+
+# remove old casks
+function __clean-cask {
+    caskBasePath="/usr/local/Caskroom"
+    local cask="$1"
+    local caskDirectory="$caskBasePath/$cask"
+    local versionsToRemove="$(ls -r $caskDirectory | sed 1,1d)"
+    if [[ -n $versionsToRemove ]]; then
+        while read versionToRemove ; do
+            echo "Removing $cask $versionToRemove..."
+            rm -rf "$caskDirectory/$versionToRemove"
+        done <<< "$versionsToRemove"
+    fi
+}
+
+#call this command to cleanup all, or you can specify cask name
+function cask-retire {
+  if [[ $# -eq 0 ]]; then
+      while read cask; do
+          __clean-cask "$cask"
+      done <<< "$(brew cask list)"
+  else
+      clean-cask "$1"
+  fi
 }

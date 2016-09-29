@@ -1,8 +1,6 @@
-[user]
-    name = Mark Wales
-    email = mark@smallhadroncollider.com
 [push]
-    default = simple
+    default = current
+    recurseSubmodules = on-demand
 [color]
     ui = true
 [core]
@@ -23,12 +21,18 @@
     versiontag =
 [diff "exif"]
     textconv = exiftool
-[rerere]
-	enabled = true
-	autoupdate = true
 [diff]
 	submodule = log
 [status]
 	submoduleSummary = true
 [fetch]
 	recurseSubmodules = on-demand
+[credential]
+	helper = osxkeychain
+[pager]
+    diff = diff-so-fancy | less --tabs=4 -RFX
+    show = diff-so-fancy | less --tabs=4 -RFX
+[alias]
+	permission-reset = !git diff -p -R --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
+[submodule]
+    fetchJobs = 4
