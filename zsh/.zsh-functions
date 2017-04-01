@@ -19,14 +19,6 @@ new-domain() {
     ssh shc -t "sudo new-domain $1"
 }
 
-server() {
-    if [[ $# -eq 1 ]]; then
-        php -S localhost:"$1"
-    else
-        php -S localhost:8000
-    fi
-}
-
 pskill() {
     ps -e | grep -v grep | grep "$1" | awk '{print $1}' | xargs \kill
 }
@@ -48,7 +40,11 @@ frename() {
 }
 
 scp() {
-    rsync -a --partial --exclude=".svn/" --exclude=".git/" --progress --rsh=ssh "$1" "$2"
+    rsync -a -P --exclude=".svn/" --exclude=".git/" --rsh=ssh "$1" "$2"
+}
+
+dup() {
+    rsync -acipuP "$1" "$2"
 }
 
 ours() {
@@ -143,20 +139,12 @@ tnew () {
     fi
 }
 
-_stop() {
-    git push 2> /dev/null
-    vagrant "$1" 2> /dev/null
-    tmux kill-session -t "$(tmux display-message -p '#S')"
-}
-
-# Stops the current Tmux session and closes any Vagrant machines that might be running
+# Stops the current Tmux session and closes any Vagrant/docker machines that might be running
 stop () {
-    _stop "halt"
-}
-
-# Stops the current Tmux session and destroys any Vagrant machines that might be running
-finish () {
-    _stop "destroy"
+    git push 2> /dev/null
+    vagrant halt 2> /dev/null
+    docker-compose stop 2> /dev/null
+    tmux kill-session -t "$(tmux display-message -p '#S')"
 }
 
 # Runs a single command in Vagrant SSH
@@ -216,7 +204,7 @@ slides() {
     md="$1"
     name=$(echo "$md" | cut -f 1 -d '.')
     command="${@:2}"
-    markdown-to-slides "$md" -o "$name".html -l ~/.markdown-to-slides/template.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js "$command"
+    markdown-to-slides "$md" -o "$name".html -l ~/.markdown-to-slides/template.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js "$command" --include-remark 
 }
 
 # remove old casks

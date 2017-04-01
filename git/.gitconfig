@@ -1,3 +1,6 @@
+[user]
+    name = Mark Wales
+    email = mark@smallhadroncollider.com
 [push]
     default = current
     recurseSubmodules = on-demand

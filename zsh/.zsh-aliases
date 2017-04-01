@@ -10,8 +10,7 @@ alias breu="brew update && brew upgrade && brew cleanup --force"
 alias casku="brew cask list -1 | xargs brew cask install && brew cask cleanup && cask-retire"
 alias vimu="vim +PluginUpdate +qall"
 alias antu="antigen update"
-alias update="breu && antu && vimu"
-alias ycmu="(cd ~/.vim/bundle/YouCompleteMe && ./install.py --tern-completer --clang-completer)"
+alias update="breu && antu && vagrant plugin update && vimu && exit"
 
 # Shell aliases
 alias mkdir="mkdir -p" # Create a directory recursively by default
@@ -24,10 +23,15 @@ alias new="tmuxinator copy default"
 alias start="tmuxinator start"
 alias switch="tmuxinator switch-client -t"
 
+# Docker aliases
+alias dc="docker-compose"
+alias up="dc up -d --build --remove-orphans"
+alias restart="dc restart && up"
+
 # Git Aliases
 alias m="git commit -m"
 alias a="git add -i"
-alias s="git status -su"
+alias s="git status -su 2> /dev/null || ls"
 alias add="git add --all"
 alias latest="git add --all && git commit -m 'Latest Build'"
 alias init="git init && git flow init"
@@ -53,7 +57,7 @@ alias gcp="git cherry-pick"
 alias cherry-pick="git cherry-pick"
 
 alias push="git push --all && git push --tags"
-alias pull="git fetch --all && git pull --rebase && git submodule sync --recursive && git submodule update --init --recursive"
+alias pull="git stash && git fetch --all && git pull --rebase && git submodule sync --recursive && git submodule update --init --recursive && git stash pop"
 
 alias submodule="git submodule"
 
@@ -95,3 +99,5 @@ alias email="open -a Mail"
 alias md="grip --export"
 alias cap="bundle exec cap"
 alias cask="brew cask"
+alias es6="babel-node --presets es2015"
+alias pdf="xelatex"

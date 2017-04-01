@@ -1,7 +1,10 @@
 #! /bin/bash
 
 cp ~/.vimrc vim/
-cp ~/.zsh* zsh/
 cp ~/.git* git/
 cp ~/.tmux.conf tmux/
 cp ~/.agignore .
+
+cp ~/.zshrc zsh/
+cp ~/.zsh-aliases zsh/
+cp ~/.zsh-functions zsh/

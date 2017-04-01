@@ -4,7 +4,7 @@
 # Requirements
 #########################
 
-# git clone https://github.com/zsh-users/antigen.git
+# brew install antigen 
 # gem install tmuxinator - tmux session configuration
 # brew install grc - colouring terminal output
 # brew install zsh-syntax-highlighting - highlighting commands
@@ -13,6 +13,9 @@
 ##########################
 # General Setup
 #########################
+
+# Load all ssh keys
+ssh-add -A &>/dev/null
 
 # Tmuxinator auto-complete
 export ZSH_TMUX_AUTOSTART=true
@@ -24,12 +27,12 @@ antigen use oh-my-zsh
 
 # Load plugins
 antigen bundle bower
-antigen bundle brew
 antigen bundle brew-cask
 antigen bundle capistrano
 antigen bundle composer
 antigen bundle command-not-found
 antigen bundle dirhistory
+antigen bundle docker
 antigen bundle extract
 antigen bundle git
 antigen bundle git-flow
@@ -40,7 +43,6 @@ antigen bundle node
 antigen bundle npm
 antigen bundle rsync
 antigen bundle safe-paste
-antigen bundle thefuck
 antigen bundle tmux
 antigen bundle tmuxinator
 antigen bundle vagrant
@@ -51,6 +53,7 @@ antigen bundle zsh-users/zsh-completions src
 
 antigen bundle smallhadroncollider/antigen-skeleton
 antigen bundle smallhadroncollider/antigen-git-rebase
+antigen bundle smallhadroncollider/antigen-watch
 
 antigen theme bhilburn/powerlevel9k powerlevel9k
 
@@ -65,15 +68,14 @@ source "$HOME/.zsh-functions"
 eval "$(direnv hook zsh)"
 
 # Set key timeout to 1ms for zsh vimode
+bindkey -v
+bindkey -M vicmd '?' history-incremental-search-backward
 export KEYTIMEOUT=1
-
-# Bind the § key to run thefuck
-bindkey "§" fuck-command-line
 
 # Theme Settings
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
-POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX="> "
+POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX="λ: "
 POWERLEVEL9K_SHOW_CHANGESET=true
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(vi_mode time)
@@ -89,4 +91,5 @@ POWERLEVEL9K_VI_MODE_INSERT_FOREGROUND='cyan'
 # Use z
 . `brew --prefix`/etc/profile.d/z.sh
 
+# iTerm integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
