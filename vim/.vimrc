@@ -13,6 +13,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter' " Gitbar
 Plug 'altercation/vim-colors-solarized' " Solarized Colour Scheme
+Plug 'bimlas/vim-high'
 Plug 'bling/vim-airline' " airline status bar
 Plug 'christoomey/vim-tmux-navigator' " vim/tmux window navigation
 Plug 'editorconfig/editorconfig-vim' " EditorConfig support
@@ -28,6 +29,7 @@ Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
 Plug 'skywind3000/asyncrun.vim'
 Plug 'terryma/vim-multiple-cursors' " multiple cursors
 Plug 'tomtom/tcomment_vim' " smart commenting
+Plug 'tpope/vim-fugitive' " git
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale' " linter 
 
@@ -190,6 +192,9 @@ map <leader>t :copen<CR>:AsyncRun! bin/tests<CR>
 inoremap ;; <End>;<Esc>
 nnoremap ;; A;<Esc>
 
+" install plugins
+map <leader>,, :PlugInstall<CR>:PlugClean<CR>q
+
 " Add insert comma shortcut
 inoremap ,, <End>,<Esc>
 nnoremap ,, A,<Esc>
@@ -223,6 +228,14 @@ map <leader><Tab> :'<,'>ret<CR>
 " sort
 map <leader>j :'<,'>sort i<CR>
 
+" git
+map ß :Gstatus<CR> " alt-s
+map ∂ :Gdiff<CR> " alt-d
+map å :Gwrite<CR> " alt-a
+map µ :Gcommit<CR> " alt-m
+map ® :Gremove<CR> " alt-r
+map ÷ :Gblame<CR> " alt-/
+map – :Git reset %<CR> " alt--
 
 " =============
 " Plugin Config
@@ -291,3 +304,8 @@ let g:UltiSnipsSnippetsDir = "~/.vim/snippets"
 " Completor
 let g:completor_php_omni_trigger = '([$\w]+|use\s*|->[$\w]*|::[$\w]*|implements\s*|extends\s*|class\s+[$\w]+|new\s*)$'
 let g:completor_css_omni_trigger = '([\w-]+|@[\w-]*|[\w-]+:\s*[\w-]*)$'
+
+" Vim High
+let g:high_lighters = {
+\   'markers': {'pattern': 'TODO\|NOTE', 'hlgroup': 'ErrorMsg'}
+\}
