@@ -95,10 +95,13 @@ gem=(
     bundler
     css_lint
     capistrano
+    mdl
 )
 
 pip=(
     grip
+    vim-vint
+    yamllint
 )
 
 vagrant=(
