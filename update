@@ -1,6 +1,7 @@
 #! /bin/bash
 
 cp ~/.vimrc vim/
+cp -r ~/.vim/snippets vim/
 cp ~/.git* git/
 cp ~/.tmux.conf tmux/
 cp ~/.agignore .

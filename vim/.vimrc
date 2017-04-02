@@ -1,48 +1,46 @@
-" =============
-" Vundle Config
-" =============
-set nocompatible              " be improved, required
-filetype off                  " required for Vundle
+set nocompatible
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" auto-install Plug if not installed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+" =======
+" Plugins
+" =======
+call plug#begin('~/.vim/plugged')
 
-Plugin 'airblade/vim-gitgutter' " Gitbar
-Plugin 'altercation/vim-colors-solarized' " Solarized Colour Scheme
-Plugin 'bling/vim-airline' " airline status bar
-Plugin 'christoomey/vim-tmux-navigator' " vim/tmux window navigation
-Plugin 'editorconfig/editorconfig-vim' " EditorConfig support
-Plugin 'FooSoft/vim-argwrap' " wrap/unwrap arguments
-Plugin 'kien/ctrlp.vim' " CtrlP
-Plugin 'maralla/completor.vim'
-Plugin 'mhinz/vim-grepper'
-Plugin 'qpkorr/vim-bufkill' " keeps splits when killing buffers
-Plugin 'Raimondi/delimitMate' " adds matching end brackets
-Plugin 'scrooloose/nerdtree'
-Plugin 'SirVer/ultisnips'
-Plugin 'sjl/gundo.vim'
-Plugin 'skywind3000/asyncrun.vim'
-Plugin 'terryma/vim-multiple-cursors' " multiple cursors
-Plugin 'tomtom/tcomment_vim' " smart commenting
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'w0rp/ale' " linter 
+Plug 'airblade/vim-gitgutter' " Gitbar
+Plug 'altercation/vim-colors-solarized' " Solarized Colour Scheme
+Plug 'bling/vim-airline' " airline status bar
+Plug 'christoomey/vim-tmux-navigator' " vim/tmux window navigation
+Plug 'editorconfig/editorconfig-vim' " EditorConfig support
+Plug 'FooSoft/vim-argwrap', { 'on': 'ArgWrap' } " wrap/unwrap arguments
+Plug 'kien/ctrlp.vim' " CtrlP
+Plug 'maralla/completor.vim', { 'do': 'make js' }
+Plug 'mhinz/vim-grepper', { 'on': 'Grepper' }
+Plug 'qpkorr/vim-bufkill' " keeps splits when killing buffers
+Plug 'Raimondi/delimitMate' " adds matching end brackets
+Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
+Plug 'SirVer/ultisnips'
+Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
+Plug 'skywind3000/asyncrun.vim'
+Plug 'terryma/vim-multiple-cursors' " multiple cursors
+Plug 'tomtom/tcomment_vim' " smart commenting
+Plug 'vim-airline/vim-airline-themes'
+Plug 'w0rp/ale' " linter 
 
 " syntax highlighting
-Plugin 'GutenYe/json5.vim'
-Plugin 'mxw/vim-jsx'
-Plugin 'othree/html5.vim' " html5 syntax highlighting
-Plugin 'pangloss/vim-javascript' " javascript syntax highlighting
-Plugin 'raichoo/purescript-vim' " purescript syntax highlighting
-Plugin 'StanAngeloff/php.vim' " Better PHP syntax highlighting
-Plugin 'xsbeats/vim-blade'
+Plug 'GutenYe/json5.vim', { 'for': 'json5' }
+Plug 'mxw/vim-jsx', { 'for': 'jsx' }
+Plug 'othree/html5.vim', { 'for': 'html' } " html5 syntax highlighting
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' } " javascript syntax highlighting
+Plug 'raichoo/purescript-vim', { 'for': 'purescript' } " purescript syntax highlighting
+Plug 'StanAngeloff/php.vim', { 'for': 'php' } " Better PHP syntax highlighting
+Plug 'xsbeats/vim-blade', { 'for': 'php' }
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+call plug#end()
 
 
 " ==========
@@ -75,36 +73,9 @@ set scrolloff=15
 set noerrorbells
 set novisualbell
 
-" Map \q to close buffer
-nmap <leader><Esc> :lcl<CR>:ccl<CR>
-nmap <leader>q :lcl<CR>:BD<CR>
-nmap <leader>Q :lcl<CR>:ccl<CR>:bd *<C-a><CR><CR>
-nmap <leader>qq :lcl<CR>:bd<CR>
-
-" preferences
-map <leader>, :e ~/.vimrc<CR>
-
-" preferences
-map <leader>] :bn<CR>
-map <leader>[ :bp<CR>
-
-" save
-map <leader>w :w<CR>
-map <leader>W :w<CR>
-
-" replace single quotes in selection
-map <leader>" :s/'/"/g<CR>
-
-" sort out tabs
-map <leader><Tab> :'<,'>ret<CR>
-
-" sort
-map <leader>j :'<,'>sort i<CR>
-
 " Highlight search results
 set hlsearch
 set incsearch
-nnoremap <silent> <leader>/ :nohlsearch<CR> " hide search results with \/
 
 " Set utf8 as standard encoding
 set encoding=utf8
@@ -167,13 +138,8 @@ imap <down> <nop>
 imap <left> <nop>
 imap <right> <nop>
 
-" Add insert semi-colon shortcut
-inoremap ;; <End>;<Esc>
-nnoremap ;; A;<Esc>
-
-" Add insert comma shortcut
-inoremap ,, <End>,<Esc>
-nnoremap ,, A,<Esc>
+" omni completion
+set omnifunc=syntaxcomplete#Complete
 
 " backups
 set backupdir=~/.vim/tmp
@@ -209,18 +175,53 @@ augroup BWCCreateDir
     autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
 augroup END
 
-" half window
-nnoremap <leader>h :rightb vnew<cr>
-
-" Grep shortcut
-map <leader>s :cw<Esc>
-
 " Spell check
 autocmd FileType markdown,html,txt setlocal spell spelllang=en_gb
 :hi SpellBad cterm=underline ctermfg=red
 
+" ==========
+" Shortcuts 
+" ==========
+
 " test
 map <leader>t :copen<CR>:AsyncRun! bin/tests<CR>
+
+" Add insert semi-colon shortcut
+inoremap ;; <End>;<Esc>
+nnoremap ;; A;<Esc>
+
+" Add insert comma shortcut
+inoremap ,, <End>,<Esc>
+nnoremap ,, A,<Esc>
+
+" hide search results with \/
+nnoremap <silent> <leader>/ :nohlsearch<CR>
+
+" Map \q to close buffer
+nmap <leader><Esc> :lcl<CR>:ccl<CR>
+nmap <leader>q :lcl<CR>:BD<CR>
+nmap <leader>Q :lcl<CR>:ccl<CR>:bd *<C-a><CR><CR>
+nmap <leader>qq :lcl<CR>:bd<CR>
+
+" preferences
+map <leader>, :e ~/.vimrc<CR>
+
+" preferences
+map <leader>] :bn<CR>
+map <leader>[ :bp<CR>
+
+" save
+map <leader>w :w<CR>
+map <leader>W :w<CR>
+
+" replace single quotes in selection
+map <leader>" :s/'/"/g<CR>
+
+" sort out tabs
+map <leader><Tab> :'<,'>ret<CR>
+
+" sort
+map <leader>j :'<,'>sort i<CR>
 
 
 " =============
@@ -283,3 +284,10 @@ map // :Grepper<CR>
 
 " AsyncRun
 let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
+
+" UltiSnips
+let g:UltiSnipsSnippetsDir = "~/.vim/snippets"
+
+" Completor
+let g:completor_php_omni_trigger = '([$\w]+|use\s*|->[$\w]*|::[$\w]*|implements\s*|extends\s*|class\s+[$\w]+|new\s*)$'
+let g:completor_css_omni_trigger = '([\w-]+|@[\w-]*|[\w-]+:\s*[\w-]*)$'

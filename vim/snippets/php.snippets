@@ -1,0 +1,43 @@
+snippet <?php
+	<?php
+
+	namespace $1;
+
+	class $2
+	{
+		$3
+	}
+snippet config
+	<?php
+
+	return [
+		$1
+	];
+snippet =
+	<?= $1 ?>
+snippet fe
+	<?php foreach($1 as $2) { ?>
+		$3
+	<?php } ?>
+snippet test
+	<?php
+
+	namespace UnitTests\\$1;
+
+	use TestCase;
+	use Mockery;
+
+	use $2\\$1\\$3;
+
+	class $3Test extends TestCase
+	{
+		public function setup()
+		{
+			parent::setup();
+		}
+
+		public function test$4()
+		{
+			$5
+		}
+	}
