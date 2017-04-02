@@ -245,6 +245,7 @@ map – :Git reset %<CR> " alt--
 set laststatus=2
 let g:airline_powerline_fonts=1
 let g:airline_theme="solarized"
+let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
 
 " Ale
 let g:ale_sign_error = '✕'
@@ -294,9 +295,6 @@ au FileType php let b:delimitMate_matchpairs = "(:),[:],{:}"
 
 " Grepper
 map // :Grepper<CR>
-
-" AsyncRun
-let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
 
 " UltiSnips
 let g:UltiSnipsSnippetsDir = "~/.vim/snippets"

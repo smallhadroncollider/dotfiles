@@ -9,3 +9,5 @@ cp ~/.agignore .
 cp ~/.zshrc zsh/
 cp ~/.zsh-aliases zsh/
 cp ~/.zsh-functions zsh/
+
+cp ~/iCloud/mac-setup/*.sh setup/
