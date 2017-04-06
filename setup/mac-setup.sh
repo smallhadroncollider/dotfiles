@@ -25,10 +25,12 @@ brew=(
     php-code-sniffer
     pkg-config
     proselint
+    purescript
     randomize-lines
     ruby
     shellcheck
     terminal-notifier
+    tidy-html5
     tree
     the_silver_searcher
     wget
@@ -77,6 +79,7 @@ npm=(
     babel-eslint
     babel-cli
     browser-sync
+    bower
     csslint
     eslint
     eslint-plugin-react

@@ -199,6 +199,10 @@ map <leader>,, :PlugInstall<CR>:PlugClean<CR>q
 inoremap ,, <End>,<Esc>
 nnoremap ,, A,<Esc>
 
+" copy path
+map <leader>= :silent !echo % \| pbcopy<CR>:redraw!<CR>
+
+
 " hide search results with \/
 nnoremap <silent> <leader>/ :nohlsearch<CR>
 
@@ -216,8 +220,8 @@ map <leader>] :bn<CR>
 map <leader>[ :bp<CR>
 
 " save
-map <leader>w :w<CR>
-map <leader>W :w<CR>
+map <leader>w :w<CR>:lnext<CR>
+map <leader>W :w<CR>:lnext<CR>
 
 " replace single quotes in selection
 map <leader>" :s/'/"/g<CR>
@@ -229,13 +233,30 @@ map <leader><Tab> :'<,'>ret<CR>
 map <leader>j :'<,'>sort i<CR>
 
 " git
-map ß :Gstatus<CR> " alt-s
-map ∂ :Gdiff<CR> " alt-d
-map å :Gwrite<CR> " alt-a
-map µ :Gcommit<CR> " alt-m
-map ® :Gremove<CR> " alt-r
-map ÷ :Gblame<CR> " alt-/
-map – :Git reset %<CR> " alt--
+
+" alt-s
+map ß :Gstatus<CR>
+
+" alt-d
+map ∂ :Gdiff<CR>
+
+" alt-a
+map å :Gwrite<CR>
+
+" alt-m
+map µ :Gcommit<CR>
+
+" alt-r
+map ® :Gremove<CR>
+
+" alt-/
+map ÷ :Gblame<CR>
+
+" alt--
+map – :Git reset %<CR>
+
+" alt-x
+map ≈ :Gread<CR>
 
 " =============
 " Plugin Config
@@ -256,6 +277,7 @@ let g:ale_php_phpmd_ruleset = "codesize,design,unusedcode,naming,/Users/mark/.vi
 
 let g:ale_linters = {
 \   'javascript': ['eslint', 'flow'],
+\   'html': ['tidy'],
 \}
 
 " CtrlP
@@ -302,8 +324,10 @@ let g:UltiSnipsSnippetsDir = "~/.vim/snippets"
 " Completor
 let g:completor_php_omni_trigger = '([$\w]+|use\s*|->[$\w]*|::[$\w]*|implements\s*|extends\s*|class\s+[$\w]+|new\s*)$'
 let g:completor_css_omni_trigger = '([\w-]+|@[\w-]*|[\w-]+:\s*[\w-]*)$'
+inoremap <expr> <c-j> ("\<C-n>")
+inoremap <expr> <c-k> ("\<C-p>")
 
 " Vim High
 let g:high_lighters = {
-\   'markers': {'pattern': 'TODO\|NOTE', 'hlgroup': 'ErrorMsg'}
+\   'markers': {'pattern': '@TODO\|@NOTE', 'hlgroup': 'ErrorMsg'}
 \}
