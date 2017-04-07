@@ -1,9 +1,10 @@
-set nocompatible
+set encoding=utf8
+scriptencoding utf-8
 
 " auto-install Plug if not installed
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 " =======
@@ -58,7 +59,6 @@ set wildmenu
 
 " reload files that are changed
 set autoread
-au WinEnter * checktime " check for updated file when window changed
 
 " Don't redraw while executing macros (good performance config)
 set lazyredraw
@@ -80,11 +80,10 @@ set hlsearch
 set incsearch
 
 " Set utf8 as standard encoding
-set encoding=utf8
 set fileencoding=utf-8
 
 " Use Unix as the standard file type
-set ffs=unix,dos,mac
+set fileformats=unix,dos,mac
 
 " Use spaces instead of tabs
 set expandtab
@@ -94,8 +93,8 @@ set shiftwidth=4
 set tabstop=4
 set softtabstop=4
 
-set ai "Auto indent
-set si "Smart indent
+set autoindent "Auto indent
+set smartindent "Smart indent
 set number " line numbers
 
 " Backspace navigation
@@ -147,10 +146,6 @@ set omnifunc=syntaxcomplete#Complete
 set backupdir=~/.vim/tmp
 set directory=~/.vim/tmp
 
-" Syntax of these languages is fussy over tabs/spaces
-autocmd FileType make setlocal ts=4 sts=4 sw=4 noexpandtab
-autocmd FileType yml setlocal ts=2 sts=2 sw=2
-
 " Non-default file types 
 autocmd BufNewFile,BufRead Vagrantfile set filetype=ruby
 autocmd BufNewFile,BufRead Gemfile set filetype=ruby
@@ -161,24 +156,18 @@ autocmd BufNewFile,BufRead *.make set filetype=make
 autocmd BufNewFile,BufRead *.yaml set filetype=yml
 
 " create file parent directories if they don't exist
-if !exists("*s:MkNonExDir")
+if !exists('*s:MkNonExDir')
     function s:MkNonExDir(file, buf)
         if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
-            let dir=fnamemodify(a:file, ':h')
-            if !isdirectory(dir)
-                call mkdir(dir, 'p')
+            let l:dir=fnamemodify(a:file, ':h')
+            if !isdirectory(l:dir)
+                call mkdir(l:dir, 'p')
             endif
         endif
     endfunction
 endif
 
-augroup BWCCreateDir
-    autocmd!
-    autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
-augroup END
-
 " Spell check
-autocmd FileType markdown,html,txt setlocal spell spelllang=en_gb
 :hi SpellBad cterm=underline ctermfg=red
 
 " ==========
@@ -264,16 +253,16 @@ map ≈ :Gread<CR>
 
 " Airline
 set laststatus=2
-let g:airline_powerline_fonts=1
-let g:airline_theme="solarized"
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'solarized'
 let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
 
 " Ale
 let g:ale_sign_error = '✕'
 let g:ale_sign_warning = '!'
 
-let g:ale_php_phpcs_standard = "PSR1,PSR2"
-let g:ale_php_phpmd_ruleset = "codesize,design,unusedcode,naming,/Users/mark/.vim/syntastic/sandi-metz.xml"
+let g:ale_php_phpcs_standard = 'PSR1,PSR2'
+let g:ale_php_phpmd_ruleset = 'codesize,design,unusedcode,naming,/Users/mark/.vim/syntastic/sandi-metz.xml'
 
 let g:ale_linters = {
 \   'javascript': ['eslint', 'flow'],
@@ -311,15 +300,21 @@ call gitgutter#highlight#define_highlights()
 map <leader>n :NERDTreeToggle<CR>
 map <leader>f :NERDTreeFind<CR>
 map <leader>r :vertical res 30<CR>
-
-" DelimitMate
-au FileType php let b:delimitMate_matchpairs = "(:),[:],{:}"
+let g:NERDTreeShowHidden=1
+let g:NERDTreeIgnore = [
+\    '.DS_Store',
+\   '\.git[[dir]]',
+\   'build[[dir]]',
+\   'node_modules[[dir]]',
+\   'vendor[[dir]]',
+\   'log[[dir]]'
+\]
 
 " Grepper
 map // :Grepper<CR>
 
 " UltiSnips
-let g:UltiSnipsSnippetsDir = "~/.vim/snippets"
+let g:UltiSnipsSnippetsDir = '~/.vim/snippets'
 
 " Completor
 let g:completor_php_omni_trigger = '([$\w]+|use\s*|->[$\w]*|::[$\w]*|implements\s*|extends\s*|class\s+[$\w]+|new\s*)$'
@@ -331,3 +326,27 @@ inoremap <expr> <c-k> ("\<C-p>")
 let g:high_lighters = {
 \   'markers': {'pattern': '@TODO\|@NOTE', 'hlgroup': 'ErrorMsg'}
 \}
+
+" ==============
+" Auto Commands 
+" ==============
+augroup vimrc
+	" Remove all vimrc autocommands
+    autocmd!
+
+    " DelimitMate
+    au FileType php let b:delimitMate_matchpairs = '(:),[:],{:}'
+
+    " Spell check
+    autocmd FileType markdown,html,txt setlocal spell spelllang=en_gb
+    
+    " make non-existent directories
+    autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
+
+    " Syntax of these languages is fussy over tabs/spaces
+    autocmd FileType make setlocal ts=4 sts=4 sw=4 noexpandtab
+    autocmd FileType yml setlocal ts=2 sts=2 sw=2
+
+    " check for updated file when window changed
+    au WinEnter * checktime
+augroup END

@@ -97,6 +97,7 @@ npm=(
 gem=(
     bundler
     css_lint
+    scss_lint
     capistrano
     mdl
 )
