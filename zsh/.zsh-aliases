@@ -58,6 +58,7 @@ alias cherry-pick="git cherry-pick"
 
 alias push="git push --all && git push --tags"
 alias pull="git stash && git fetch --all && git pull --rebase && git submodule sync --recursive && git submodule update --init --recursive && git stash pop"
+alias repo="pull; push"
 
 alias submodule="git submodule"
 
@@ -101,3 +102,4 @@ alias cap="bundle exec cap"
 alias cask="brew cask"
 alias es6="babel-node --presets es2015"
 alias pdf="xelatex"
+alias yoink="open -a Yoink"

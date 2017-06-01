@@ -23,11 +23,12 @@ export ZSH_TMUX_AUTOSTART=true
 # Antigen
 source $(brew --prefix)/share/antigen/antigen.zsh
 
+ANTIGEN_BUNDLES="$HOME/.antigen/bundles"
+
 antigen use oh-my-zsh
 
 # Load plugins
 antigen bundle bower
-antigen bundle brew-cask
 antigen bundle capistrano
 antigen bundle composer
 antigen bundle command-not-found
@@ -55,24 +56,8 @@ antigen bundle smallhadroncollider/antigen-skeleton
 antigen bundle smallhadroncollider/antigen-git-rebase
 antigen bundle smallhadroncollider/antigen-watch
 
-antigen theme bhilburn/powerlevel9k powerlevel9k
-
-# Apply antigen
-antigen apply
-
-# Custom commands
-source "$HOME/.zsh-aliases"
-source "$HOME/.zsh-functions"
-
-# User direnv
-eval "$(direnv hook zsh)"
-
-# Set key timeout to 1ms for zsh vimode
-bindkey -v
-bindkey -M vicmd '?' history-incremental-search-backward
-export KEYTIMEOUT=1
-
 # Theme Settings
+POWERLEVEL9K_INSTALLATION_PATH="$ANTIGEN_BUNDLES/bhilburn/powerlevel9k"
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
 POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX="λ: "
@@ -88,8 +73,30 @@ POWERLEVEL9K_TIME_BACKGROUND='blue'
 POWERLEVEL9K_VI_MODE_NORMAL_FOREGROUND='red'
 POWERLEVEL9K_VI_MODE_INSERT_FOREGROUND='cyan'
 
+antigen theme bhilburn/powerlevel9k powerlevel9k
+
+# Apply antigen
+antigen apply
+
+# fzf
+export FZF_DEFAULT_COMMAND='rg --files --ignore-case --hidden --follow --glob "!.git/*"'
+
+# Custom commands
+source "$HOME/.zsh-aliases"
+source "$HOME/.zsh-functions"
+
+# User direnv
+eval "$(direnv hook zsh)"
+
+# Set key timeout to 1ms for zsh vimode
+bindkey -v
+bindkey -M vicmd '?' history-incremental-search-backward
+export KEYTIMEOUT=1
+
 # Use z
 . `brew --prefix`/etc/profile.d/z.sh
 
 # iTerm integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

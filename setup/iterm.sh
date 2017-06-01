@@ -6,8 +6,10 @@ taps=(
 brew=(
     antigen
     direnv
+    fzf
     mackup
     reattach-to-user-namespace
+    ripgrep
     tmux
     "vim --with-override-system-vi"
     z

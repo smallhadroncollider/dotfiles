@@ -207,6 +207,11 @@ slides() {
     markdown-to-slides "$md" -o "$name".html -l ~/.markdown-to-slides/template.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js "$command" --include-remark 
 }
 
+complete() {
+    f="$1"
+    mv "$HOME/.tmuxinator/$f.yml" "$HOME/.tmuxinator/completed/$f.yml"
+}
+
 # remove old casks
 function __clean-cask {
     caskBasePath="/usr/local/Caskroom"

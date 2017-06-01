@@ -9,3 +9,5 @@ desktop.ini
 .trashes
 .phpcomplete_extended/
 .agignore
+Session.vim
+.undodir

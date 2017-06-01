@@ -27,6 +27,7 @@ brew=(
     proselint
     purescript
     randomize-lines
+    ranger
     ruby
     shellcheck
     terminal-notifier
@@ -42,6 +43,7 @@ cask=(
     caffeine
     chefdk
     dash
+    daisydisk
     divvy
     docker
     expandrive
@@ -85,6 +87,7 @@ npm=(
     eslint-plugin-react
     git-recent
     grunt-cli
+    gulp-cli
     jsonlint
     loadtest
     markdown-to-slides

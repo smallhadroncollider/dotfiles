@@ -4,6 +4,8 @@
 [push]
     default = current
     recurseSubmodules = on-demand
+[commit]
+    template = ~/.gitcommit.template
 [color]
     ui = true
 [core]
@@ -30,6 +32,8 @@
 	submoduleSummary = true
 [fetch]
 	recurseSubmodules = on-demand
+[merge]
+    ff = only
 [credential]
 	helper = osxkeychain
 [pager]

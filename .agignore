@@ -13,6 +13,7 @@ build/
 fuel/core/
 cookbooks/
 berks-cookbooks/
+.undodir/
 
 .DS_Store
 .lock
@@ -21,3 +22,4 @@ berks-cookbooks/
 Icon
 *.sql
 .agignore
+Session.vim

@@ -19,20 +19,23 @@ Plug 'bling/vim-airline' " airline status bar
 Plug 'christoomey/vim-tmux-navigator' " vim/tmux window navigation
 Plug 'editorconfig/editorconfig-vim' " EditorConfig support
 Plug 'FooSoft/vim-argwrap', { 'on': 'ArgWrap' } " wrap/unwrap arguments
-Plug 'kien/ctrlp.vim' " CtrlP
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'maralla/completor.vim', { 'do': 'make js' }
 Plug 'mhinz/vim-grepper', { 'on': 'Grepper' }
 Plug 'qpkorr/vim-bufkill' " keeps splits when killing buffers
 Plug 'Raimondi/delimitMate' " adds matching end brackets
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
+Plug 'sdeleon28/vim-todo', { 'for': 'todo' } " todo files
 Plug 'SirVer/ultisnips'
 Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
 Plug 'skywind3000/asyncrun.vim'
 Plug 'terryma/vim-multiple-cursors' " multiple cursors
+Plug 'thaerkh/vim-workspace'
 Plug 'tomtom/tcomment_vim' " smart commenting
 Plug 'tpope/vim-fugitive' " git
 Plug 'vim-airline/vim-airline-themes'
-Plug 'w0rp/ale' " linter 
+Plug 'w0rp/ale' " linter
 
 " syntax highlighting
 Plug 'GutenYe/json5.vim', { 'for': 'json5' }
@@ -146,7 +149,7 @@ set omnifunc=syntaxcomplete#Complete
 set backupdir=~/.vim/tmp
 set directory=~/.vim/tmp
 
-" Non-default file types 
+" Non-default file types
 autocmd BufNewFile,BufRead Vagrantfile set filetype=ruby
 autocmd BufNewFile,BufRead Gemfile set filetype=ruby
 autocmd BufNewFile,BufRead Podfile set filetype=ruby
@@ -171,7 +174,7 @@ endif
 :hi SpellBad cterm=underline ctermfg=red
 
 " ==========
-" Shortcuts 
+" Shortcuts
 " ==========
 
 " test
@@ -204,13 +207,9 @@ nmap <leader>qq :lcl<CR>:bd<CR>
 " preferences
 map <leader>, :e ~/.vimrc<CR>
 
-" preferences
-map <leader>] :bn<CR>
-map <leader>[ :bp<CR>
-
 " save
-map <leader>w :w<CR>:lnext<CR>
-map <leader>W :w<CR>:lnext<CR>
+map <leader>w :w<CR>
+map <leader>W :w<CR>
 
 " replace single quotes in selection
 map <leader>" :s/'/"/g<CR>
@@ -269,18 +268,25 @@ let g:ale_linters = {
 \   'html': ['tidy'],
 \}
 
-" CtrlP
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_working_path_mode = 'a'
-map <c-o> :CtrlPBuffer<CR>
-let g:ctrlp_match_window = 'bottom,order:ttb'
-let g:ctrlp_show_hidden = 1
+" fzf
+map <c-p> :Files<CR>
+map <c-o> :Buffers<CR>
 
-if executable('ag')
-    set grepprg=ag\ --nogroup\ --nocolor
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -U --depth -1 --follow --hidden -g ""'
-    let g:ctrlp_use_caching = 0
-endif
+let g:fzf_layout = { 'down': '7em' }
+
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 
 " Gundo
 nnoremap <leader>u :GundoToggle<CR>
@@ -302,10 +308,12 @@ map <leader>f :NERDTreeFind<CR>
 map <leader>r :vertical res 30<CR>
 let g:NERDTreeShowHidden=1
 let g:NERDTreeIgnore = [
-\    '.DS_Store',
+\    '\.DS_Store[[file]]',
+\    'Session.vim[[file]]',
 \   '\.git[[dir]]',
 \   'build[[dir]]',
 \   'node_modules[[dir]]',
+\   '\.undodir[[dir]]',
 \   'vendor[[dir]]',
 \   'log[[dir]]'
 \]
@@ -327,8 +335,11 @@ let g:high_lighters = {
 \   'markers': {'pattern': '@TODO\|@NOTE', 'hlgroup': 'ErrorMsg'}
 \}
 
+" vim-workspace
+nnoremap <leader>s :ToggleWorkspace<CR>
+
 " ==============
-" Auto Commands 
+" Auto Commands
 " ==============
 augroup vimrc
 	" Remove all vimrc autocommands
@@ -339,7 +350,7 @@ augroup vimrc
 
     " Spell check
     autocmd FileType markdown,html,txt setlocal spell spelllang=en_gb
-    
+
     " make non-existent directories
     autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
 
