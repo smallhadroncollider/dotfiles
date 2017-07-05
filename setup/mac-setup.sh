@@ -15,6 +15,7 @@ brew=(
     git-flow
     graphviz
     grc
+    hub
     icdiff
     keybase
     libsass

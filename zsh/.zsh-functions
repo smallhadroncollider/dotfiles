@@ -204,7 +204,7 @@ slides() {
     md="$1"
     name=$(echo "$md" | cut -f 1 -d '.')
     command="${@:2}"
-    markdown-to-slides "$md" -o "$name".html -l ~/.markdown-to-slides/template.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js "$command" --include-remark 
+    markdown-to-slides "$md" -o "$name".html -l ~/.markdown-to-slides/template.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js "$command" --include-remark
 }
 
 complete() {

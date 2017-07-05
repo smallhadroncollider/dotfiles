@@ -4,7 +4,7 @@
 # Requirements
 #########################
 
-# brew install antigen 
+# brew install antigen
 # gem install tmuxinator - tmux session configuration
 # brew install grc - colouring terminal output
 # brew install zsh-syntax-highlighting - highlighting commands

@@ -14,14 +14,13 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter' " Gitbar
 Plug 'altercation/vim-colors-solarized' " Solarized Colour Scheme
-Plug 'bimlas/vim-high'
 Plug 'bling/vim-airline' " airline status bar
 Plug 'christoomey/vim-tmux-navigator' " vim/tmux window navigation
 Plug 'editorconfig/editorconfig-vim' " EditorConfig support
 Plug 'FooSoft/vim-argwrap', { 'on': 'ArgWrap' } " wrap/unwrap arguments
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'maralla/completor.vim', { 'do': 'make js' }
+Plug 'maralla/completor.vim', { 'do': 'make js && rm yarn.lock' }
 Plug 'mhinz/vim-grepper', { 'on': 'Grepper' }
 Plug 'qpkorr/vim-bufkill' " keeps splits when killing buffers
 Plug 'Raimondi/delimitMate' " adds matching end brackets
@@ -38,13 +37,13 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale' " linter
 
 " syntax highlighting
-Plug 'GutenYe/json5.vim', { 'for': 'json5' }
-Plug 'mxw/vim-jsx', { 'for': 'jsx' }
-Plug 'othree/html5.vim', { 'for': 'html' } " html5 syntax highlighting
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' } " javascript syntax highlighting
-Plug 'raichoo/purescript-vim', { 'for': 'purescript' } " purescript syntax highlighting
-Plug 'StanAngeloff/php.vim', { 'for': 'php' } " Better PHP syntax highlighting
-Plug 'xsbeats/vim-blade', { 'for': 'php' }
+Plug 'GutenYe/json5.vim'
+Plug 'mxw/vim-jsx'
+Plug 'othree/html5.vim' " html5 syntax highlighting
+Plug 'pangloss/vim-javascript' " javascript syntax highlighting
+Plug 'raichoo/purescript-vim' " purescript syntax highlighting
+Plug 'StanAngeloff/php.vim' " Better PHP syntax highlighting
+Plug 'xsbeats/vim-blade'
 
 call plug#end()
 
@@ -66,6 +65,9 @@ set autoread
 " Don't redraw while executing macros (good performance config)
 set lazyredraw
 set updatetime=4000
+
+" only highlight first 200 characters of very long lines
+set synmaxcol=500
 
 " Always show current position
 set ruler
@@ -176,6 +178,9 @@ endif
 " ==========
 " Shortcuts
 " ==========
+
+" quit
+map <leader><Esc><Esc> :qa<CR>
 
 " test
 map <leader>t :copen<CR>:AsyncRun! bin/tests<CR>
@@ -325,15 +330,10 @@ map // :Grepper<CR>
 let g:UltiSnipsSnippetsDir = '~/.vim/snippets'
 
 " Completor
-let g:completor_php_omni_trigger = '([$\w]+|use\s*|->[$\w]*|::[$\w]*|implements\s*|extends\s*|class\s+[$\w]+|new\s*)$'
+let g:completor_php_omni_trigger = '([$\w]+|->[$\w]*|::[$\w]*|implements\s*|extends\s*|class\s+[$\w]+|new\s*)$'
 let g:completor_css_omni_trigger = '([\w-]+|@[\w-]*|[\w-]+:\s*[\w-]*)$'
 inoremap <expr> <c-j> ("\<C-n>")
 inoremap <expr> <c-k> ("\<C-p>")
-
-" Vim High
-let g:high_lighters = {
-\   'markers': {'pattern': '@TODO\|@NOTE', 'hlgroup': 'ErrorMsg'}
-\}
 
 " vim-workspace
 nnoremap <leader>s :ToggleWorkspace<CR>

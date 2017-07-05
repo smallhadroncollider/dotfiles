@@ -29,6 +29,7 @@ alias up="dc up -d --build --remove-orphans"
 alias restart="dc restart && up"
 
 # Git Aliases
+alias git="hub"
 alias m="git commit -m"
 alias a="git add -i"
 alias s="git status -su 2> /dev/null || ls"
