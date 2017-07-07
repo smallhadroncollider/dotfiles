@@ -7,6 +7,7 @@ taps=(
 brew=(
     cmake
     composer
+    ctags-exuberant
     diff-so-fancy
     exiftool
     flow
@@ -22,6 +23,7 @@ brew=(
     node
     "php70 --without-apache"
     php70-mcrypt
+    phpctags
     phpmd
     php-code-sniffer
     pkg-config
