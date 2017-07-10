@@ -22,7 +22,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'lvht/tagbar-markdown'
 Plug 'majutsushi/tagbar'
-Plug 'maralla/completor.vim', { 'do': 'make js && rm yarn.lock' }
+" Plug 'maralla/completor.vim', { 'do': 'make js && rm yarn.lock' }
 Plug 'mhinz/vim-grepper', { 'on': 'Grepper' }
 Plug 'qpkorr/vim-bufkill' " keeps splits when killing buffers
 Plug 'Raimondi/delimitMate' " adds matching end brackets
@@ -36,7 +36,7 @@ Plug 'thaerkh/vim-workspace'
 Plug 'tomtom/tcomment_vim' " smart commenting
 Plug 'tpope/vim-fugitive' " git
 Plug 'vim-airline/vim-airline-themes'
-Plug 'vim-php/tagbar-phpctags.vim'
+Plug 'vim-php/tagbar-phpctags.vim', { 'for': 'php' }
 Plug 'w0rp/ale' " linter
 
 " syntax highlighting
@@ -343,11 +343,12 @@ nnoremap <leader>s :ToggleWorkspace<CR>
 
 " tagbar
 nmap tt :TagbarToggle<CR>
-let g:tagbar_left = 1
+let g:tagbar_left = 0
 let g:tagbar_autofocus = 1
 let g:tagbar_compact = 1
 let g:tagbar_autoshowtag = 1
 let g:tagbar_sort = 0
+let g:tagbar_width = 30
 
 " ==============
 " Auto Commands
