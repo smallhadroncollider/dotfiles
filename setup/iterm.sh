@@ -26,6 +26,8 @@ cask=(
 fonts=(
     font-inconsolata
     font-fira-code
+    font-lora
+    font-lato
 )
 
 gem=(

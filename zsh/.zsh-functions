@@ -59,6 +59,12 @@ git-undelete() {
     git checkout $(git rev-list -n 1 HEAD -- "$1")^ -- "$1"
 }
 
+png() {
+    dt="$1"
+    name=$(echo "$dt" | cut -f 1 -d '.')
+    dot -Tpng -Gdpi=300 "$dt" > "$name.png"
+}
+
 
 log() {
     git log --color --graph --pretty=format:'%Cgreen%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit $@ | cat -n | less
@@ -203,8 +209,28 @@ register-vms() {
 slides() {
     md="$1"
     name=$(echo "$md" | cut -f 1 -d '.')
-    command="${@:2}"
-    markdown-to-slides "$md" -o "$name".html -l ~/.markdown-to-slides/template.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js "$command" --include-remark
+    markdown-to-slides -i "$md" -o "$name-slides.html" -l ~/.markdown-to-slides/template-portable.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js -w
+}
+
+slides-local() {
+    md="$1"
+    name=$(echo "$md" | cut -f 1 -d '.')
+    markdown-to-slides -i "$md" -o "$name-slides.html" -l ~/.markdown-to-slides/template-local.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js -w
+}
+
+
+# markdown to HTML
+html() {
+    file="$1"
+    name=$(echo "$file" | cut -f 1 -d '.')
+    ext="$2" 
+
+    if [ -z "$ext" ]; then
+        display_error "Extension required"
+        return
+    fi
+
+    grip "$file" --export "$name-$ext.html"
 }
 
 complete() {

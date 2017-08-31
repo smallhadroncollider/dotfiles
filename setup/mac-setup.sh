@@ -2,6 +2,7 @@ taps=(
     homebrew/versions
     homebrew/dupes
     homebrew/homebrew-php
+    GoogleChrome/simplehttp2server
 )
 
 brew=(
@@ -33,6 +34,7 @@ brew=(
     ranger
     ruby
     shellcheck
+    simplehttp2server
     terminal-notifier
     tidy-html5
     tree

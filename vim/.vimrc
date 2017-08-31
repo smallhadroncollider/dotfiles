@@ -21,8 +21,8 @@ Plug 'FooSoft/vim-argwrap', { 'on': 'ArgWrap' } " wrap/unwrap arguments
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'lvht/tagbar-markdown'
-Plug 'majutsushi/tagbar'
-" Plug 'maralla/completor.vim', { 'do': 'make js && rm yarn.lock' }
+Plug 'majutsushi/tagbar', { 'do': 'brew install ctags-exuberant' }
+Plug 'maralla/completor.vim', { 'do': 'make js && rm yarn.lock' }
 Plug 'mhinz/vim-grepper', { 'on': 'Grepper' }
 Plug 'qpkorr/vim-bufkill' " keeps splits when killing buffers
 Plug 'Raimondi/delimitMate' " adds matching end brackets
@@ -32,11 +32,10 @@ Plug 'SirVer/ultisnips'
 Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
 Plug 'skywind3000/asyncrun.vim'
 Plug 'terryma/vim-multiple-cursors' " multiple cursors
-Plug 'thaerkh/vim-workspace'
 Plug 'tomtom/tcomment_vim' " smart commenting
 Plug 'tpope/vim-fugitive' " git
 Plug 'vim-airline/vim-airline-themes'
-Plug 'vim-php/tagbar-phpctags.vim', { 'for': 'php' }
+Plug 'vim-php/tagbar-phpctags.vim', { 'for': 'php', 'do': 'brew install homebrew/php/phpctags' }
 Plug 'w0rp/ale' " linter
 
 " syntax highlighting
@@ -77,7 +76,7 @@ set ruler
 set cursorline
 
 " Keep cursor more in middle
-set scrolloff=15
+set scrolloff=999
 
 " sounds off
 set noerrorbells
@@ -103,6 +102,7 @@ set softtabstop=4
 
 set autoindent "Auto indent
 set smartindent "Smart indent
+set relativenumber
 set number " line numbers
 
 " Backspace navigation
@@ -192,6 +192,9 @@ map <leader>t :copen<CR>:AsyncRun! bin/tests<CR>
 inoremap ;; <End>;<Esc>
 nnoremap ;; A;<Esc>
 
+" tick line
+map <leader><Space> A ✓<Esc>
+
 " install plugins
 map <leader>,, :PlugInstall<CR>:PlugClean<CR>q
 
@@ -267,6 +270,7 @@ let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status
 " Ale
 let g:ale_sign_error = '✕'
 let g:ale_sign_warning = '!'
+let g:ale_lint_delay = 1000
 
 let g:ale_php_phpcs_standard = 'PSR1,PSR2'
 let g:ale_php_phpmd_ruleset = 'codesize,design,unusedcode,naming,/Users/mark/.vim/syntastic/sandi-metz.xml'
@@ -318,6 +322,9 @@ let g:NERDTreeShowHidden=1
 let g:NERDTreeIgnore = [
 \    '\.DS_Store[[file]]',
 \    'Session.vim[[file]]',
+\    'slides.html$[[file]]',
+\    'notes.html$[[file]]',
+\    'challenges.html$[[file]]',
 \   '\.git[[dir]]',
 \   'build[[dir]]',
 \   'node_modules[[dir]]',
@@ -333,13 +340,9 @@ map // :Grepper<CR>
 let g:UltiSnipsSnippetsDir = '~/.vim/snippets'
 
 " Completor
-let g:completor_php_omni_trigger = '([$\w]+|->[$\w]*|::[$\w]*|implements\s*|extends\s*|class\s+[$\w]+|new\s*)$'
 let g:completor_css_omni_trigger = '([\w-]+|@[\w-]*|[\w-]+:\s*[\w-]*)$'
 inoremap <expr> <c-j> ("\<C-n>")
 inoremap <expr> <c-k> ("\<C-p>")
-
-" vim-workspace
-nnoremap <leader>s :ToggleWorkspace<CR>
 
 " tagbar
 nmap tt :TagbarToggle<CR>
