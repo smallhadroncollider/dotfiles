@@ -22,8 +22,8 @@ brew=(
     keybase
     libsass
     node
-    "php70 --without-apache"
-    php70-mcrypt
+    "php71 --without-apache"
+    php71-mcrypt
     phpctags
     phpmd
     php-code-sniffer

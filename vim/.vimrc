@@ -41,10 +41,11 @@ Plug 'w0rp/ale' " linter
 " syntax highlighting
 Plug 'GutenYe/json5.vim'
 Plug 'mxw/vim-jsx'
-Plug 'othree/html5.vim' " html5 syntax highlighting
-Plug 'pangloss/vim-javascript' " javascript syntax highlighting
-Plug 'raichoo/purescript-vim' " purescript syntax highlighting
-Plug 'StanAngeloff/php.vim' " Better PHP syntax highlighting
+Plug 'othree/html5.vim'
+Plug 'pangloss/vim-javascript' " better javascript
+Plug 'PProvost/vim-ps1' " powershell
+Plug 'raichoo/purescript-vim'
+Plug 'StanAngeloff/php.vim' " better PHP
 Plug 'xsbeats/vim-blade'
 
 call plug#end()
@@ -162,6 +163,7 @@ autocmd BufNewFile,BufRead Berksfile set filetype=ruby
 autocmd BufNewFile,BufRead Cheffile set filetype=ruby
 autocmd BufNewFile,BufRead *.make set filetype=make
 autocmd BufNewFile,BufRead *.yaml set filetype=yml
+autocmd BufNewFile,BufRead *.cabal set filetype=yml
 
 " create file parent directories if they don't exist
 if !exists('*s:MkNonExDir')
@@ -328,6 +330,7 @@ let g:NERDTreeIgnore = [
 \   '\.git[[dir]]',
 \   'build[[dir]]',
 \   'node_modules[[dir]]',
+\   '\.stack-work[[dir]]',
 \   '\.undodir[[dir]]',
 \   'vendor[[dir]]',
 \   'log[[dir]]'

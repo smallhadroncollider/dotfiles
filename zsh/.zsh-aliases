@@ -7,10 +7,10 @@ alias touch="create"
 
 # Updates
 alias breu="brew update && brew upgrade && brew cleanup --force"
-alias casku="brew cask list -1 | xargs brew cask install && brew cask cleanup && cask-retire"
+alias casku="brew cu --yes --quiet --cleanup"
 alias vimu="vim +PlugUpgrade +PlugUpdate +PlugClean +qall"
 alias antu="antigen update"
-alias update="breu && antu && vagrant plugin update && vimu && exit"
+alias update="breu && casku && antu && vagrant plugin update && vimu && exit"
 
 # Shell aliases
 alias mkdir="mkdir -p" # Create a directory recursively by default

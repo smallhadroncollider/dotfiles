@@ -1,6 +1,7 @@
 taps=(
     caskroom/versions
     caskroom/fonts
+    buo/cask-upgrade
 )
 
 brew=(

@@ -79,13 +79,10 @@ lowercase() {
 }
 
 # Log a file with mac notifications
-# run `brew install terminal-notifier` to install terminal-notifier
 logit () {
     clear
     tail -F $1 | while read line; do
         echo "$line"
-        # echo "$line" | sed $'s/$/\a/' # Emit the bell sound
-        # echo "$line" | sed 's/[[:space:]]/\\ /g' | xargs -n 1 terminal-notifier -title $2 -message # Show in notification centre
     done
 }
 
@@ -101,13 +98,6 @@ create () {
     for i do
         \touch $i
     done
-}
-
-# Laravel: create file in app and tests directory
-lt () {
-    filename="$@"
-    create "app/${filename}.php"
-    create "tests/${filename}Test.php"
 }
 
 # Copy In Place: Copies file from directory to same directory
@@ -132,17 +122,6 @@ layout () {
     tmux list-windows | awk '{print $7}' |  sed 's/\]$//' | pbcopy
     pbpaste
     echo '[tmux layout copied to clipboard]'
-}
-
-# Creates a new Tmux session from within an existing Tmux session
-tnew () {
-    if [[ $# -eq 1 ]]; then
-        TMUX= tmux new-session -d -s $1
-        tmux switch-client -t $1
-        cd ~
-    else
-        display_error 'Session name required'
-    fi
 }
 
 # Stops the current Tmux session and closes any Vagrant/docker machines that might be running
@@ -236,29 +215,4 @@ html() {
 complete() {
     f="$1"
     mv "$HOME/.tmuxinator/$f.yml" "$HOME/.tmuxinator/completed/$f.yml"
-}
-
-# remove old casks
-function __clean-cask {
-    caskBasePath="/usr/local/Caskroom"
-    local cask="$1"
-    local caskDirectory="$caskBasePath/$cask"
-    local versionsToRemove="$(ls -r $caskDirectory | sed 1,1d)"
-    if [[ -n $versionsToRemove ]]; then
-        while read versionToRemove ; do
-            echo "Removing $cask $versionToRemove..."
-            rm -rf "$caskDirectory/$versionToRemove"
-        done <<< "$versionsToRemove"
-    fi
-}
-
-#call this command to cleanup all, or you can specify cask name
-function cask-retire {
-  if [[ $# -eq 0 ]]; then
-      while read cask; do
-          __clean-cask "$cask"
-      done <<< "$(brew cask list)"
-  else
-      clean-cask "$1"
-  fi
 }
