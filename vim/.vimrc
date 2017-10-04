@@ -27,7 +27,6 @@ Plug 'mhinz/vim-grepper', { 'on': 'Grepper' }
 Plug 'qpkorr/vim-bufkill' " keeps splits when killing buffers
 Plug 'Raimondi/delimitMate' " adds matching end brackets
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
-Plug 'sdeleon28/vim-todo', { 'for': 'todo' } " todo files
 Plug 'SirVer/ultisnips'
 Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
 Plug 'skywind3000/asyncrun.vim'
@@ -75,9 +74,6 @@ set synmaxcol=500
 " Always show current position
 set ruler
 set cursorline
-
-" Keep cursor more in middle
-set scrolloff=999
 
 " sounds off
 set noerrorbells
@@ -134,9 +130,12 @@ augroup END " }
 set shell=/bin/zsh
 set guioptions= " remove all guioptions
 
-" move vertically by visual line
-nnoremap j gj
-nnoremap k gk
+" move vertically by visual line and keep things centered
+nnoremap j gjzz
+nnoremap k gkzz
+nnoremap G Gzz
+set scrolloff=0
+
 
 " disable arrow keys
 map <up> <nop>
@@ -330,6 +329,8 @@ let g:NERDTreeIgnore = [
 \   '\.git[[dir]]',
 \   'build[[dir]]',
 \   'node_modules[[dir]]',
+\   'bower_components[[dir]]',
+\   '\.pulp-cache[[dir]]',
 \   '\.stack-work[[dir]]',
 \   '\.undodir[[dir]]',
 \   'vendor[[dir]]',
