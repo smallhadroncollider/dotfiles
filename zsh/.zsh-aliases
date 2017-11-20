@@ -1,4 +1,4 @@
-##########################
+#########################
 # Aliases
 #########################
 
@@ -106,3 +106,4 @@ alias pdf="xelatex"
 alias yoink="open -a Yoink"
 alias server="simplehttp2server -listen ':8000'"
 alias ls="exa -lah --git -s type"
+alias maxima="clear && rlwrap -A maxima -q"

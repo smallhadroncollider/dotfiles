@@ -79,6 +79,7 @@ antigen theme bhilburn/powerlevel9k powerlevel9k
 antigen apply
 
 # fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --ignore-case --hidden --follow --glob "!.git/*"'
 
 # Custom commands
@@ -99,4 +100,3 @@ export KEYTIMEOUT=1
 # iTerm integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

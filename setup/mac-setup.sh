@@ -6,6 +6,7 @@ taps=(
 )
 
 brew=(
+    cabal-install
     cmake
     composer
     ctags-exuberant
@@ -15,8 +16,10 @@ brew=(
     fontforge
     git
     git-flow
+    ghc
     graphviz
     grc
+    haskell-stack
     hub
     icdiff
     keybase
@@ -24,6 +27,7 @@ brew=(
     node
     "php71 --without-apache"
     php71-mcrypt
+    php71-ast
     phpctags
     phpmd
     php-code-sniffer
@@ -57,7 +61,6 @@ cask=(
     gpgtools
     google-chrome
     google-chrome-canary
-    haskell-platform
     istat-menus
     java
     keybase
@@ -110,10 +113,20 @@ gem=(
     mdl
 )
 
+composer=(
+    "phan/phan"
+)
+
 pip=(
     grip
     vim-vint
     yamllint
+)
+
+cabal=(
+    hlint
+    hfmt
+    hdevtools
 )
 
 vagrant=(
@@ -143,10 +156,13 @@ brew cleanup --force
 brew cask cleanup
 
 gem install ${gem[@]}
+composer global require ${composer[@]}
 npm install -g ${npm[@]}
 
 sudo easy_install pip
 sudo pip install ${pip[@]}
+
+cabal install ${cabal[@]}
 
 vagrant plugin install ${vagrant[@]}
 

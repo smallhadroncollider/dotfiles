@@ -203,6 +203,9 @@ map <leader>,, :PlugInstall<CR>:PlugClean<CR>q
 inoremap ,, <End>,<Esc>
 nnoremap ,, A,<Esc>
 
+" lambda
+inoremap ¬ λ
+
 " copy path
 map <leader>= :silent !echo % \| pbcopy<CR>:redraw!<CR>
 
@@ -330,6 +333,9 @@ let g:NERDTreeIgnore = [
 \   'build[[dir]]',
 \   'node_modules[[dir]]',
 \   'bower_components[[dir]]',
+\   'jspm[[dir]]',
+\   'output[[dir]]',
+\   '\.psci_modules[[dir]]',
 \   '\.pulp-cache[[dir]]',
 \   '\.stack-work[[dir]]',
 \   '\.undodir[[dir]]',
@@ -368,7 +374,7 @@ augroup vimrc
     au FileType php let b:delimitMate_matchpairs = '(:),[:],{:}'
 
     " Spell check
-    autocmd FileType markdown,html,txt setlocal spell spelllang=en_gb
+    autocmd FileType markdown,html,txt,tex setlocal spell spelllang=en_gb
 
     " make non-existent directories
     autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
