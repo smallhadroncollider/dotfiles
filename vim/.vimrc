@@ -75,6 +75,10 @@ set synmaxcol=500
 set ruler
 set cursorline
 
+" wrapping
+set wrap
+set linebreak
+
 " sounds off
 set noerrorbells
 set novisualbell
@@ -272,6 +276,9 @@ let g:airline_theme = 'solarized'
 let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
 
 " Ale
+let g:ale_fix_on_save = 1
+let g:ale_completion_enabled = 1
+
 let g:ale_sign_error = '✕'
 let g:ale_sign_warning = '!'
 let g:ale_lint_delay = 1000
@@ -279,8 +286,11 @@ let g:ale_lint_delay = 1000
 let g:ale_php_phpcs_standard = 'PSR1,PSR2'
 let g:ale_php_phpmd_ruleset = 'codesize,design,unusedcode,naming,/Users/mark/.vim/syntastic/sandi-metz.xml'
 
+let g:ale_fixers = ['remove_trailing_lines', 'trim_whitespace']
+
 let g:ale_linters = {
 \   'javascript': ['eslint', 'flow'],
+\   'haskell': ['stack-ghc-mod', 'hdevtools', 'hlint', 'stack-build', 'stack-ghc'],
 \   'html': ['tidy'],
 \}
 

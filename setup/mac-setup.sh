@@ -124,6 +124,7 @@ pip=(
 )
 
 cabal=(
+    happy
     hlint
     hfmt
     hdevtools
@@ -162,7 +163,10 @@ npm install -g ${npm[@]}
 sudo easy_install pip
 sudo pip install ${pip[@]}
 
-cabal install ${cabal[@]}
+for i in "${cabal[@]}"
+do
+    cabal install $i
+done
 
 vagrant plugin install ${vagrant[@]}
 
