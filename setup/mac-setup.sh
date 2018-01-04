@@ -25,8 +25,7 @@ brew=(
     keybase
     libsass
     node
-    "php71 --without-apache"
-    php71-mcrypt
+    php72
     php71-ast
     phpctags
     phpmd
@@ -85,14 +84,15 @@ cask=(
     vmware-fusion
 )
 
-npm=(
-    babel-eslint
+yarn=(
     babel-cli
     browser-sync
     bower
+    create-react-app
+    create-react-app-native
     csslint
     eslint
-    eslint-plugin-react
+    eslint-plugin-immutable
     git-recent
     grunt-cli
     gulp-cli
@@ -102,18 +102,20 @@ npm=(
     pulp
     karma-cli
     trash-cli
+    tern
     webpack
+    webpack-dev-server
 )
 
 gem=(
     bundler
-    css_lint
     scss_lint
     capistrano
     mdl
 )
 
 composer=(
+    "laravel/installer"
     "phan/phan"
 )
 
@@ -158,7 +160,7 @@ brew cask cleanup
 
 gem install ${gem[@]}
 composer global require ${composer[@]}
-npm install -g ${npm[@]}
+yarn global add ${npm[@]}
 
 sudo easy_install pip
 sudo pip install ${pip[@]}

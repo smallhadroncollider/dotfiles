@@ -10,7 +10,7 @@ alias breu="brew update && brew upgrade && brew cleanup --force"
 alias casku="brew cu --yes --quiet --cleanup"
 alias vimu="vim +PlugUpgrade +PlugUpdate +PlugClean +qall"
 alias antu="antigen update"
-alias update="breu && casku && antu && vagrant plugin update && vimu && exit"
+alias update="breu && casku && antu && composer global update && yarn global upgrade && gem update && vagrant plugin update && vimu && exit"
 
 # Shell aliases
 alias mkdir="mkdir -p" # Create a directory recursively by default
@@ -38,7 +38,7 @@ alias add="git add --all"
 alias latest="git add --all && git commit -m 'Latest Build'"
 alias init="git init && git flow init"
 
-alias amend="git commit --amend"
+alias amend="git commit --amend --date=\"$(date -R)\""
 alias undo="git reset HEAD@{1}"
 alias wipe="git add -A && git commit -qm 'WIPE SAVE POINT' && git reset HEAD~1 --hard"
 

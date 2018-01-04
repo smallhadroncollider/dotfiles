@@ -75,10 +75,6 @@ set synmaxcol=500
 set ruler
 set cursorline
 
-" wrapping
-set wrap
-set linebreak
-
 " sounds off
 set noerrorbells
 set novisualbell
@@ -281,7 +277,9 @@ let g:ale_completion_enabled = 1
 
 let g:ale_sign_error = '✕'
 let g:ale_sign_warning = '!'
-let g:ale_lint_delay = 1000
+let g:ale_lint_delay = 500
+
+let g:ale_javascript_eslint_use_global = 1
 
 let g:ale_php_phpcs_standard = 'PSR1,PSR2'
 let g:ale_php_phpmd_ruleset = 'codesize,design,unusedcode,naming,/Users/mark/.vim/syntastic/sandi-metz.xml'
@@ -350,7 +348,12 @@ let g:NERDTreeIgnore = [
 \   '\.stack-work[[dir]]',
 \   '\.undodir[[dir]]',
 \   'vendor[[dir]]',
-\   'log[[dir]]'
+\   '^log[[dir]]',
+\   '\.zip$[[file]]',
+\   '\.gif$[[file]]',
+\   '\.jpg$[[file]]',
+\   '\.jpeg$[[file]]',
+\   '\.png$[[file]]',
 \]
 
 " Grepper
@@ -385,6 +388,7 @@ augroup vimrc
 
     " Spell check
     autocmd FileType markdown,html,txt,tex setlocal spell spelllang=en_gb
+    autocmd FileType markdown,html,txt,tex setlocal linebreak
 
     " make non-existent directories
     autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
