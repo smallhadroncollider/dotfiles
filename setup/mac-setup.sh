@@ -130,6 +130,7 @@ cabal=(
     hlint
     hfmt
     hdevtools
+    hasktags
 )
 
 vagrant=(

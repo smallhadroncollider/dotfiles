@@ -74,6 +74,7 @@ set synmaxcol=500
 " Always show current position
 set ruler
 set cursorline
+set cursorcolumn
 
 " sounds off
 set noerrorbells
@@ -92,6 +93,14 @@ set fileformats=unix,dos,mac
 " Use spaces instead of tabs
 set expandtab
 
+" highlight tabs/trailing spaces
+set list
+set listchars=tab:>-,trail:·
+match ErrorMsg '\s\+$'
+
+" highlight smart quotes
+match ErrorMsg '[“”]'
+
 " 1 tab == 4 spaces
 set shiftwidth=4
 set tabstop=4
@@ -99,11 +108,18 @@ set softtabstop=4
 
 set autoindent "Auto indent
 set smartindent "Smart indent
-set relativenumber
+
+" keep selection when indenting
+vnoremap < <gv
+vnoremap > >gv
+
 set number " line numbers
 
 " Backspace navigation
 set backspace=indent,eol,start
+
+" set intelligent line joins
+set formatoptions+=j
 
 " Use OS clipboard
 set clipboard=unnamed
@@ -375,6 +391,38 @@ let g:tagbar_compact = 1
 let g:tagbar_autoshowtag = 1
 let g:tagbar_sort = 0
 let g:tagbar_width = 30
+
+let g:tagbar_type_haskell = {
+    \ 'ctagsbin'  : 'hasktags',
+    \ 'ctagsargs' : '-x -c -o-',
+    \ 'kinds'     : [
+        \  'm:modules:0:1',
+        \  'd:data: 0:1',
+        \  'd_gadt: data gadt:0:1',
+        \  't:type names:0:1',
+        \  'nt:new types:0:1',
+        \  'c:classes:0:1',
+        \  'cons:constructors:1:1',
+        \  'c_gadt:constructor gadt:1:1',
+        \  'c_a:constructor accessors:1:1',
+        \  'ft:function types:1:1',
+        \  'fi:function implementations:0:1',
+        \  'o:others:0:1'
+    \ ],
+    \ 'sro'        : '.',
+    \ 'kind2scope' : {
+        \ 'm' : 'module',
+        \ 'c' : 'class',
+        \ 'd' : 'data',
+        \ 't' : 'type'
+    \ },
+    \ 'scope2kind' : {
+        \ 'module' : 'm',
+        \ 'class'  : 'c',
+        \ 'data'   : 'd',
+        \ 'type'   : 't'
+    \ }
+\ }
 
 " ==============
 " Auto Commands
