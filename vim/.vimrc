@@ -16,6 +16,7 @@ Plug 'airblade/vim-gitgutter' " Gitbar
 Plug 'altercation/vim-colors-solarized' " Solarized Colour Scheme
 Plug 'bling/vim-airline' " airline status bar
 Plug 'christoomey/vim-tmux-navigator' " vim/tmux window navigation
+Plug 'darfink/vim-plist'
 Plug 'editorconfig/editorconfig-vim' " EditorConfig support
 Plug 'FooSoft/vim-argwrap', { 'on': 'ArgWrap' } " wrap/unwrap arguments
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -427,6 +428,9 @@ let g:tagbar_type_haskell = {
         \ 'type'   : 't'
     \ }
 \ }
+
+" plist
+let g:plist_display_format = 'json'
 
 " ==============
 " Auto Commands

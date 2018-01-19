@@ -61,9 +61,9 @@ defaults write com.apple.finder ShowStatusBar -bool true
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 defaults write com.apple.finder FXPreferredViewStyle Clmv
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.finder QLEnableTextSelection -bool true
-defaults write com.apple.finder AppleShowAllFiles YES
 
 killall Finder
 
