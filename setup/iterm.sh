@@ -7,12 +7,15 @@ taps=(
 brew=(
     antigen
     direnv
+    exa
     fzf
     mackup
+    node
     reattach-to-user-namespace
     ripgrep
     tmux
     "vim --with-override-system-vi"
+    yarn
     z
     zsh
     zsh-syntax-highlighting
@@ -35,7 +38,7 @@ gem=(
     tmuxinator
 )
 
-npm=(
+yarn=(
     tern
 )
 
@@ -71,7 +74,7 @@ brew cask cleanup
 brew pin python
 
 gem install ${gem[@]}
-npm install -g ${npm[@]}
+yarn global add ${yarn[@]}
 
 # Setup Mackup
 ln -s ~/iCloud/.mackup/.mackup ~/
@@ -88,6 +91,8 @@ chmod -R 600 ~/.ssh/keys
 
 # Setup Tmux plugin manager - tmux needs to be running at this point
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+~/.tmux/plugins/tpm/bin/install_plugins
 
-# Final message
-printf "\n\nNow run visudo and add the 'Defaults tty_tickets' option\n"
+# create vim directories and install plugins
+mkdir -p "$HOME/.vim/tmp"
+vim +PlugInstall +qall +silent

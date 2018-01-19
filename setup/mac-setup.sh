@@ -1,8 +1,5 @@
 taps=(
-    homebrew/versions
-    homebrew/dupes
     homebrew/homebrew-php
-    GoogleChrome/simplehttp2server
 )
 
 brew=(
@@ -22,11 +19,9 @@ brew=(
     haskell-stack
     hub
     icdiff
-    keybase
     libsass
-    node
     php72
-    php71-ast
+    php72-ast
     phpctags
     phpmd
     php-code-sniffer
@@ -37,7 +32,6 @@ brew=(
     ranger
     ruby
     shellcheck
-    simplehttp2server
     terminal-notifier
     tidy-html5
     tree
@@ -47,6 +41,7 @@ brew=(
 )
 
 cask=(
+    authy
     backblaze
     caffeine
     chefdk
@@ -57,7 +52,7 @@ cask=(
     expandrive
     fantastical
     fluid
-    gpgtools
+    gpg-suite
     google-chrome
     google-chrome-canary
     istat-menus
@@ -89,7 +84,7 @@ yarn=(
     browser-sync
     bower
     create-react-app
-    create-react-app-native
+    create-react-native-app
     csslint
     eslint
     eslint-plugin-immutable
@@ -102,7 +97,6 @@ yarn=(
     pulp
     karma-cli
     trash-cli
-    tern
     webpack
     webpack-dev-server
 )
@@ -159,12 +153,18 @@ done
 brew cleanup --force
 brew cask cleanup
 
+for i in "${yarn[@]}"
+do
+    yarn global add $i 
+done
+
 gem install ${gem[@]}
 composer global require ${composer[@]}
-yarn global add ${npm[@]}
 
 sudo easy_install pip
 sudo pip install ${pip[@]}
+
+cabal update
 
 for i in "${cabal[@]}"
 do

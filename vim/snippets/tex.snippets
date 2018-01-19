@@ -9,3 +9,12 @@ snippet enumerate list
 	\\begin{enumerate}
 		\\item ${1:${VISUAL}}
 	\\end{enumerate}
+
+snippet figure image
+	\\hfill
+	\\begin{figure}[h!]
+		\\begin{center}
+			\\includegraphics[width=20em]{${1:${VISUAL}}}
+			\\caption{${2}}
+		\\end{center}
+	\\end{figure}

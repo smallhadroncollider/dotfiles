@@ -188,13 +188,15 @@ register-vms() {
 slides() {
     md="$1"
     name=$(echo "$md" | cut -f 1 -d '.')
-    markdown-to-slides -i "$md" -o "$name-slides.html" -l ~/.markdown-to-slides/template-portable.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js -w
+    additional="${@:2}"
+    markdown-to-slides -i "$md" -o "$name-slides.html" -l ~/.markdown-to-slides/template-portable.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js additional
 }
 
 slides-local() {
     md="$1"
     name=$(echo "$md" | cut -f 1 -d '.')
-    markdown-to-slides -i "$md" -o "$name-slides.html" -l ~/.markdown-to-slides/template-local.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js -w
+    additional="${@:2}"
+    markdown-to-slides -i "$md" -o "$name-slides.html" -l ~/.markdown-to-slides/template-local.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js additional
 }
 
 
@@ -210,6 +212,18 @@ html() {
     fi
 
     grip "$file" --export "$name-$ext.html"
+}
+
+# coding fellowship notes/slides
+notes() {
+    for i in *.md; do
+        name=$(echo "$file" | cut -f 1 -d '.')
+        html "$i" "notes"
+        slides "$i"
+        open "$name-slides.html"
+    done
+
+    open ./
 }
 
 complete() {

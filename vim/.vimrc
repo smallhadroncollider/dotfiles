@@ -202,6 +202,9 @@ endif
 " quit
 map <leader><Esc><Esc> :qa<CR>
 
+" show location list
+map <leader>! :lopen<CR>
+
 " test
 map <leader>t :copen<CR>:AsyncRun! bin/tests<CR>
 
@@ -286,6 +289,7 @@ set laststatus=2
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'solarized'
 let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
+let g:airline#extensions#ale#enabled = 1
 
 " Ale
 let g:ale_fix_on_save = 1
@@ -338,7 +342,7 @@ nnoremap <silent> <leader>a :ArgWrap<CR>
 syntax enable
 set term=screen-256color
 set background=dark
-colorscheme solarized
+silent! colorscheme solarized
 highlight clear SignColumn
 call gitgutter#highlight#define_highlights()
 
@@ -437,6 +441,8 @@ augroup vimrc
     " Spell check
     autocmd FileType markdown,html,txt,tex setlocal spell spelllang=en_gb
     autocmd FileType markdown,html,txt,tex setlocal linebreak
+    autocmd FileType tex syntax spell toplevel
+    autocmd FileType tex syntax sync fromstart 
 
     " make non-existent directories
     autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))

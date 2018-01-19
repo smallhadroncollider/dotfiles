@@ -37,6 +37,7 @@ alias s="git status -su 2> /dev/null || ls"
 alias add="git add --all"
 alias latest="git add --all && git commit -m 'Latest Build'"
 alias init="git init && git flow init"
+alias lastc="git rev-parse HEAD"
 
 alias amend="git commit --amend --date=\"$(date -R)\""
 alias undo="git reset HEAD@{1}"
