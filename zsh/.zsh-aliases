@@ -31,6 +31,7 @@ alias run='docker run -v "$PWD":/usr/src/app -w /usr/src/app'
 
 # Git Aliases
 alias git="hub"
+alias m="format-git-commit"
 alias a="git add -i"
 alias s="git status -su 2> /dev/null || ls"
 alias add="git add --all"

@@ -55,6 +55,7 @@ antigen bundle zsh-users/zsh-completions src
 antigen bundle smallhadroncollider/antigen-skeleton
 antigen bundle smallhadroncollider/antigen-git-rebase
 antigen bundle smallhadroncollider/antigen-watch
+antigen bundle smallhadroncollider/antigen-format-git-commit
 
 # Theme Settings
 POWERLEVEL9K_INSTALLATION_PATH="$ANTIGEN_BUNDLES/bhilburn/powerlevel9k"
