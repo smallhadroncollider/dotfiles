@@ -346,6 +346,8 @@ set background=dark
 silent! colorscheme solarized
 highlight clear SignColumn
 call gitgutter#highlight#define_highlights()
+hi clear SpellBad
+hi SpellBad cterm=underline ctermfg=5
 
 " NERDtree
 map <leader>n :NERDTreeToggle<CR>

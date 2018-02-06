@@ -28,8 +28,8 @@ cask=(
 )
 
 fonts=(
-    font-inconsolata
-    font-fira-code
+    font-inconsolata-nerd-font
+    font-firacode-nerd-font
     font-lora
     font-lato
 )

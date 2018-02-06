@@ -220,7 +220,7 @@ notes() {
         name=$(echo "$file" | cut -f 1 -d '.')
         html "$i" "notes"
         slides "$i"
-        open "$name-slides.html"
+        open -a "Google Chrome" "$name-slides.html"
     done
 
     open ./
@@ -229,4 +229,21 @@ notes() {
 complete() {
     f="$1"
     mv "$HOME/.tmuxinator/$f.yml" "$HOME/.tmuxinator/completed/$f.yml"
+}
+
+# git commit
+m() {
+    if [ -z "$1" ]; then
+        display_error "Description required"
+        return
+    fi
+
+    printf "Type: "
+    select opt in "feat" "fix" "docs" "style" "refactor" "test" "chore";
+    do
+        printf "Scope: "
+        read scope
+        git commit -m "$opt ($scope): $1"
+        return
+    done
 }
