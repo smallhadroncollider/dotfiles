@@ -28,7 +28,7 @@ cask=(
 )
 
 fonts=(
-    font-inconsolata-nerd-font
+    font-firamono-nerd-font
     font-firacode-nerd-font
     font-lora
     font-lato
