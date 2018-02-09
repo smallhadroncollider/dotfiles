@@ -1,9 +1,7 @@
 snippet equation equation aligned
-	\\begin{equation}
-		\\begin{aligned}
-			${1:${VISUAL}} &= ${2} \\\\
-		\\end{aligned}
-	\\end{equation}
+	\\begin{align}
+		${1:${VISUAL}} &= ${2} \\\\
+	\\end{align}
 
 snippet enumerate list
 	\\begin{enumerate}
@@ -18,3 +16,14 @@ snippet figure image
 			\\caption{${2}}
 		\\end{center}
 	\\end{figure}
+
+snippet verbatim verbatim
+	\hfill
+
+	\noindent\rule{\textwidth}{0.5pt}
+
+	\hfill
+
+	${1:${VISUAL}}
+
+	\verbatiminput{${2}}
