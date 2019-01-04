@@ -230,3 +230,20 @@ complete() {
     f="$1"
     mv "$HOME/.tmuxinator/$f.yml" "$HOME/.tmuxinator/completed/$f.yml"
 }
+
+# ls-changes
+ls-changes() {
+    if [ -z "$1" ]; then
+        display_error "Version required"
+        return
+    fi
+
+    git log "$1"..HEAD --pretty=format:'%s' | grep -e ^fix -e ^feat | sed 's/^[^:]*: /- /g'
+}
+
+# find a directory
+quick_find () {
+    dir=$(find /Volumes/Projects -type d -maxdepth 1 | fzf)
+    echo "$dir"
+    cd $dir
+}

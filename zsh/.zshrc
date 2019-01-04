@@ -59,7 +59,7 @@ antigen bundle smallhadroncollider/antigen-format-git-commit
 
 # Theme Settings
 prompt_dirp () {
-    local content=`pwd | sed -E -e "s,\/Volumes\/Projects\/?, ,g" | sed -E -e "s,\/Users\/mark\/?, ,g"`
+    local content=`pwd | sed -E -e "s,\/Volumes\/Projects\/?,  ,g" | sed -E -e "s,\/Users\/mark\/?,  ,g"`
     $1_prompt_segment "$0" "$2" "magenta" "black" "$content" "#"
 }
 
@@ -108,3 +108,7 @@ export KEYTIMEOUT=1
 
 # iTerm integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# quick navigation
+zle -N quick_find_widget quick_find
+bindkey "^p" quick_find_widget

@@ -3,6 +3,11 @@ snippet equation equation aligned
 		${1:${VISUAL}} &= ${2} \\\\
 	\\end{align}
 
+snippet matrix matrix
+	\\begin{pmatrix}
+		${1:${VISUAL}}
+	\\end{pmatrix}
+
 snippet enumerate list
 	\\begin{enumerate}
 		\\item ${1:${VISUAL}}
@@ -16,6 +21,13 @@ snippet figure image figure
 			\\caption{${2}}
 		\\end{center}
 	\\end{figure}
+
+snippet table table
+	\\begin{tabular}{c c c}
+		${1} & ${2} & ${3} \\\\
+		\\hline
+		${4} \\\\
+	\\end{tabular}
 
 snippet verbatim verbatim
 	\hfill

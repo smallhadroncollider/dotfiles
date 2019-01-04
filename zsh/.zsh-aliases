@@ -8,7 +8,7 @@ alias p="cd /Volumes/Projects"
 alias touch="create"
 
 # Updates
-alias breu="brew update && brew upgrade && brew cleanup --force"
+alias breu="brew update && brew upgrade && brew cleanup"
 alias casku="brew cu --yes --quiet --cleanup"
 alias vimu="vim +PlugUpgrade +PlugUpdate +PlugClean +qall"
 alias antu="antigen update"

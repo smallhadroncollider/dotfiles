@@ -24,7 +24,7 @@ brew=(
 cask=(
     1password
     alfred
-    iterm2-nightly
+    iterm2
 )
 
 fonts=(
@@ -32,10 +32,6 @@ fonts=(
     font-firacode-nerd-font
     font-lora
     font-lato
-)
-
-gem=(
-    tmuxinator
 )
 
 yarn=(
@@ -69,11 +65,9 @@ do
     brew cask install $i
 done
 
-brew cleanup --force
-brew cask cleanup
+brew cleanup
 brew pin python
 
-gem install ${gem[@]}
 yarn global add ${yarn[@]}
 
 # Setup Mackup
@@ -89,6 +83,9 @@ chsh -s /usr/local/bin/zsh
 chmod -R 700 ~/.ssh
 chmod -R 600 ~/.ssh/keys
 
+# add Ruby to path
+sudo perl -pi -e '$_ .= qq(/usr/local/opt/ruby/bin\n) if /\/usr\/local\/bin/' /etc/paths
+
 # Setup Tmux plugin manager - tmux needs to be running at this point
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ~/.tmux/plugins/tpm/bin/install_plugins
@@ -96,3 +93,6 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # create vim directories and install plugins
 mkdir -p "$HOME/.vim/tmp"
 vim +PlugInstall +qall +silent
+
+# open iTerm
+open -a iTerm

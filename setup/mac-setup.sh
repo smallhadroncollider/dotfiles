@@ -1,9 +1,8 @@
 taps=(
-    homebrew/homebrew-php
+    ValeLint/vale
 )
 
 brew=(
-    cabal-install
     cmake
     composer
     ctags-exuberant
@@ -13,17 +12,13 @@ brew=(
     fontforge
     git
     git-flow
-    ghc
     graphviz
     grc
     haskell-stack
     hub
     icdiff
     libsass
-    php72
-    php72-ast
-    phpctags
-    phpmd
+    php
     php-code-sniffer
     pkg-config
     proselint
@@ -32,19 +27,21 @@ brew=(
     ranger
     ruby
     shellcheck
+    taskell
     terminal-notifier
     tidy-html5
     tree
     the_silver_searcher
+    vale # linter - better writing
     wget
     yarn
 )
 
 cask=(
+    adobe-connect
     authy
     backblaze
     caffeine
-    chefdk
     dash
     daisydisk
     divvy
@@ -52,6 +49,7 @@ cask=(
     expandrive
     fantastical
     fluid
+    flux
     gpg-suite
     google-chrome
     google-chrome-canary
@@ -69,7 +67,6 @@ cask=(
     sequel-pro
     skype
     slack
-    spotify
     sublime-text-dev
     superduper
     transmit
@@ -80,11 +77,10 @@ cask=(
 )
 
 yarn=(
+    alex # linter - inappropriate language
     babel-cli
     browser-sync
-    bower
     create-react-app
-    create-react-native-app
     csslint
     eslint
     eslint-plugin-immutable
@@ -99,9 +95,11 @@ yarn=(
     trash-cli
     webpack
     webpack-dev-server
+    write-good # linter - good writing
 )
 
 gem=(
+    tmuxinator
     bundler
     scss_lint
     capistrano
@@ -110,21 +108,19 @@ gem=(
 
 composer=(
     "laravel/installer"
+    "vimeo/psalm" # linter - PHP
     "phan/phan"
 )
 
 pip=(
-    grip
+    grip # markdown to github-style HTML
     vim-vint
     yamllint
 )
 
-cabal=(
-    happy
+stack=(
+    ghcid
     hlint
-    hfmt
-    hdevtools
-    hasktags
 )
 
 vagrant=(
@@ -150,8 +146,7 @@ do
     brew cask install $i
 done
 
-brew cleanup --force
-brew cask cleanup
+brew cleanup
 
 for i in "${yarn[@]}"
 do
@@ -164,11 +159,9 @@ composer global require ${composer[@]}
 sudo easy_install pip
 sudo pip install ${pip[@]}
 
-cabal update
-
-for i in "${cabal[@]}"
+for i in "${stack[@]}"
 do
-    cabal install $i
+    stack install $i
 done
 
 vagrant plugin install ${vagrant[@]}
