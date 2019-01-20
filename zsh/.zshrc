@@ -102,7 +102,6 @@ eval "$(direnv hook zsh)"
 bindkey -v
 bindkey -M vicmd '?' history-incremental-search-backward
 export KEYTIMEOUT=1
-
 # Use z
 . `brew --prefix`/etc/profile.d/z.sh
 

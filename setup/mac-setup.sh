@@ -120,7 +120,10 @@ pip=(
 
 stack=(
     ghcid
+    hfmt
+    hindent
     hlint
+    stylish-haskell
 )
 
 vagrant=(
@@ -150,7 +153,7 @@ brew cleanup
 
 for i in "${yarn[@]}"
 do
-    yarn global add $i 
+    yarn global add $i
 done
 
 gem install ${gem[@]}

@@ -188,6 +188,7 @@ if !exists('*s:MkNonExDir')
 endif
 
 " Spell check
+set spellfile="~/.vim/spell/en.utf-8.add"
 :hi SpellBad cterm=underline ctermfg=red
 
 " ==========
@@ -246,7 +247,7 @@ let g:ale_completion_enabled = 1
 
 let g:ale_sign_error = '✕'
 let g:ale_sign_warning = '!'
-let g:ale_lint_delay = 500
+let g:ale_lint_delay = 1000
 
 let g:ale_javascript_eslint_use_global = 1
 
@@ -256,14 +257,16 @@ let g:ale_php_phpmd_ruleset = 'codesize,design,unusedcode,naming,/Users/mark/.vi
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'javascript': ['eslint'],
-\   'haskell': ['hlint']
+\   'haskell': ['hfmt']
 \}
 
 let g:ale_linters = {
 \   'javascript': ['eslint', 'flow'],
-\   'haskell': ['hlint'],
+\   'haskell': ['stack-ghc', 'hlint'],
 \   'html': ['tidy'],
 \}
+
+nnoremap <leader>? :ALEDetail<CR>
 
 " fzf
 map <c-p> :Files<CR>
@@ -351,7 +354,6 @@ inoremap <expr> <c-k> ("\<C-p>")
 let g:vimtex_compiler_latexmk = {'callback' : 0}
 
 " goyo
-let g:goyo_linenr = 1
 map <leader><Tab> :Goyo<CR>
 
 " ==============
@@ -368,9 +370,6 @@ augroup vimrc
     au FileType markdown,html,txt,tex setlocal spell spelllang=en_gb
     au FileType markdown,html,txt,tex setlocal linebreak
     au FileType tex syntax spell toplevel
-
-    " Goyo
-    au FileType markdown,txt,tex :Goyo
 
     " make non-existent directories
     au BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
