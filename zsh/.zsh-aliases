@@ -34,8 +34,8 @@ alias run='docker run -v "$PWD":/usr/src/app -w /usr/src/app'
 
 # Git Aliases
 alias git="hub"
-alias m="format-git-commit"
-alias cm="git commit -m"
+alias m="cmt"
+alias cm="cmt"
 alias a="git add -i"
 alias s="git status -su 2> /dev/null || ls"
 alias add="git add --all"
@@ -51,7 +51,7 @@ alias co="git checkout"
 alias develop="git checkout develop"
 alias master="git checkout master"
 
-alias stash="git stash"
+alias stash="git stash -u"
 alias unstash="git stash pop"
 
 alias gdiff="git difftool"
@@ -59,7 +59,7 @@ alias conflicts='git status --short | grep "^[^ ][^ ] "'
 alias c=conflicts
 alias merge="git merge"
 alias branch="git branch"
-alias branches="git branch -la"
+alias branches="git remote update origin --prune && git branch -la"
 alias gcp="git cherry-pick"
 alias cherry-pick="git cherry-pick"
 

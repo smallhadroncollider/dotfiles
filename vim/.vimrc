@@ -21,11 +21,9 @@ Plug 'FooSoft/vim-argwrap', { 'on': 'ArgWrap' } " wrap/unwrap arguments
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim' " distraction free writing
-Plug 'lervag/vimtex'
-Plug 'maralla/completor.vim', { 'do': 'make js && rm -f yarn.lock' }
 Plug 'mhinz/vim-grepper', { 'on': 'Grepper' }
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'} " code completion
 Plug 'qpkorr/vim-bufkill' " keeps splits when killing buffers
-Plug 'Raimondi/delimitMate' " adds matching end brackets
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'SirVer/ultisnips'
 Plug 'sjl/gundo.vim'
@@ -165,16 +163,6 @@ set omnifunc=syntaxcomplete#Complete
 set backupdir=~/.vim/tmp
 set directory=~/.vim/tmp
 
-" Non-default file types
-autocmd BufNewFile,BufRead Vagrantfile set filetype=ruby
-autocmd BufNewFile,BufRead Gemfile set filetype=ruby
-autocmd BufNewFile,BufRead Podfile set filetype=ruby
-autocmd BufNewFile,BufRead Berksfile set filetype=ruby
-autocmd BufNewFile,BufRead Cheffile set filetype=ruby
-autocmd BufNewFile,BufRead *.make set filetype=make
-autocmd BufNewFile,BufRead *.yaml set filetype=yml
-autocmd BufNewFile,BufRead *.cabal set filetype=yml
-
 " create file parent directories if they don't exist
 if !exists('*s:MkNonExDir')
     function s:MkNonExDir(file, buf)
@@ -189,7 +177,6 @@ endif
 
 " Spell check
 set spellfile="~/.vim/spell/en.utf-8.add"
-:hi SpellBad cterm=underline ctermfg=red
 
 " ==========
 " Shortcuts
@@ -243,11 +230,10 @@ let g:airline#extensions#ale#enabled = 1
 
 " Ale
 let g:ale_fix_on_save = 1
-let g:ale_completion_enabled = 1
 
 let g:ale_sign_error = '✕'
 let g:ale_sign_warning = '!'
-let g:ale_lint_delay = 1000
+let g:ale_lint_delay = 2000
 
 let g:ale_javascript_eslint_use_global = 1
 
@@ -264,9 +250,10 @@ let g:ale_linters = {
 \   'javascript': ['eslint', 'flow'],
 \   'haskell': ['stack-ghc', 'hlint'],
 \   'html': ['tidy'],
+\   'md': [],
 \}
 
-nnoremap <leader>? :ALEDetail<CR>
+nnoremap ? :ALEDetail<CR>
 
 " fzf
 map <c-p> :Files<CR>
@@ -333,6 +320,7 @@ let g:NERDTreeIgnore = [
 \   '\.jpeg$[[file]]',
 \   '\.png$[[file]]',
 \   '\.aux$[[file]]',
+\   '\.pyg$[[file]]',
 \   '\.log$[[file]]',
 \   '\.out$[[file]]',
 \   '\.pdf$[[file]]',
@@ -345,16 +333,8 @@ map // :Grepper<CR>
 " UltiSnips
 let g:UltiSnipsSnippetsDir = '~/.vim/snippets'
 
-" Completor
-let g:completor_css_omni_trigger = '([\w-]+|@[\w-]*|[\w-]+:\s*[\w-]*)$'
-inoremap <expr> <c-j> ("\<C-n>")
-inoremap <expr> <c-k> ("\<C-p>")
-
-" vimtex
-let g:vimtex_compiler_latexmk = {'callback' : 0}
-
 " goyo
-map <leader><Tab> :Goyo<CR>
+nnoremap <Tab> :Goyo<CR>
 
 " ==============
 " Auto Commands
@@ -362,6 +342,21 @@ map <leader><Tab> :Goyo<CR>
 augroup vimrc
 	" Remove all vimrc autocommands
     autocmd!
+
+    " Non-default file types
+    au BufNewFile,BufRead Vagrantfile set filetype=ruby
+    au BufNewFile,BufRead Gemfile set filetype=ruby
+    au BufNewFile,BufRead Podfile set filetype=ruby
+    au BufNewFile,BufRead Berksfile set filetype=ruby
+    au BufNewFile,BufRead Cheffile set filetype=ruby
+    au BufNewFile,BufRead *.make set filetype=make
+    au BufNewFile,BufRead *.yaml set filetype=yml
+    au BufNewFile,BufRead *.cabal set filetype=yml
+    au BufNewFile,BufRead *.tex set filetype=tex
+    au BufNewFile,BufRead .cmt set filetype=conf
+
+    " syntax highlight everything in latex/markdown
+    au FileType tex,markdown setlocal synmaxcol=0
 
     " DelimitMate
     au FileType php let b:delimitMate_matchpairs = '(:),[:],{:}'

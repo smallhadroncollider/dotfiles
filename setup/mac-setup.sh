@@ -1,7 +1,3 @@
-taps=(
-    ValeLint/vale
-)
-
 brew=(
     cmake
     composer
@@ -32,7 +28,6 @@ brew=(
     tidy-html5
     tree
     the_silver_searcher
-    vale # linter - better writing
     wget
     yarn
 )
@@ -77,7 +72,6 @@ cask=(
 )
 
 yarn=(
-    alex # linter - inappropriate language
     babel-cli
     browser-sync
     create-react-app
@@ -95,7 +89,6 @@ yarn=(
     trash-cli
     webpack
     webpack-dev-server
-    write-good # linter - good writing
 )
 
 gem=(
@@ -114,6 +107,8 @@ composer=(
 
 pip=(
     grip # markdown to github-style HTML
+    pygments
+    pygments-lexer-babylon
     vim-vint
     yamllint
 )
