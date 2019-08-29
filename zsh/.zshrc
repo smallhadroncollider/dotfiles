@@ -89,7 +89,7 @@ antigen apply
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND='rg --files --ignore-case --hidden --follow --glob "!.git/*"'
+export FZF_DEFAULT_COMMAND='rg --files --ignore-case --hidden --follow --glob "!**/.git/*"'
 
 # Custom commands
 source "$HOME/.zsh-aliases"

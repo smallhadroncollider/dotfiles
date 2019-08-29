@@ -12,23 +12,22 @@ endif
 " =======
 call plug#begin('~/.vim/plugged')
 
-Plug 'airblade/vim-gitgutter' " Gitbar
+Plug 'airblade/vim-gitgutter' " git gutter diff
 Plug 'altercation/vim-colors-solarized' " Solarized Colour Scheme
 Plug 'bling/vim-airline' " airline status bar
+Plug 'bronson/vim-visual-star-search' " better * behaviour
 Plug 'christoomey/vim-tmux-navigator' " vim/tmux window navigation
 Plug 'editorconfig/editorconfig-vim' " EditorConfig support
 Plug 'FooSoft/vim-argwrap', { 'on': 'ArgWrap' } " wrap/unwrap arguments
+Plug 'jiangmiao/auto-pairs' " add matching brackets
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim' " distraction free writing
-Plug 'mhinz/vim-grepper', { 'on': 'Grepper' }
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'} " code completion
-Plug 'qpkorr/vim-bufkill' " keeps splits when killing buffers
+Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'SirVer/ultisnips'
-Plug 'sjl/gundo.vim'
-Plug 'terryma/vim-multiple-cursors' " multiple cursors
 Plug 'tomtom/tcomment_vim' " smart commenting
+Plug 'tpope/vim-fugitive' " git support
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale' " linter
 
@@ -193,15 +192,27 @@ nnoremap ;; A;<Esc>
 inoremap ,, <End>,<Esc>
 nnoremap ,, A,<Esc>
 
+" visual block mode
+nnoremap <leader>v <c-v>
+
+" move line up/down
+nnoremap J :m .+1<CR>==
+nnoremap K :m .-2<CR>==
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
 " lambda
 inoremap ¬ λ
 
 " hide search results with \/
 nnoremap <silent> <leader>/ :nohlsearch<CR>
 
+" search for selected
+vnoremap <leader>* y/<C-R>"<CR>
+
 " Map \q to close buffer
 nmap <leader><Esc> :lcl<CR>:ccl<CR>
-nmap <leader>q :lcl<CR>:BD<CR>
+nmap <leader>q :lcl<CR>:bd<CR>
 nmap <leader>Q :lcl<CR>:ccl<CR>:bd *<C-a><CR><CR>
 nmap <leader>qq :lcl<CR>:bd<CR>
 
@@ -233,7 +244,7 @@ let g:ale_fix_on_save = 1
 
 let g:ale_sign_error = '✕'
 let g:ale_sign_warning = '!'
-let g:ale_lint_delay = 2000
+let g:ale_lint_delay = 1000
 
 let g:ale_javascript_eslint_use_global = 1
 
@@ -275,9 +286,6 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
-" Gundo
-nnoremap <leader>u :GundoToggle<CR>
-
 " argwrap
 nnoremap <silent> <leader>a :ArgWrap<CR>
 
@@ -294,7 +302,6 @@ hi SpellBad cterm=underline ctermfg=5
 " NERDtree
 map <leader>n :NERDTreeToggle<CR>
 map <leader>f :NERDTreeFind<CR>
-map <leader>r :vertical res 30<CR>
 let g:NERDTreeShowHidden=1
 let g:NERDTreeIgnore = [
 \    '\.DS_Store[[file]]',
@@ -327,14 +334,26 @@ let g:NERDTreeIgnore = [
 \   '\.toc$[[file]]',
 \]
 
-" Grepper
-map // :Grepper<CR>
-
 " UltiSnips
 let g:UltiSnipsSnippetsDir = '~/.vim/snippets'
 
 " goyo
 nnoremap <Tab> :Goyo<CR>
+
+" Grepper
+let g:grepper = {
+    \ 'tools': ['git', 'rg', 'ag'],
+    \}
+nnoremap // :Grepper<cr>
+nmap gs <plug>(GrepperOperator)
+xmap gs <plug>(GrepperOperator)
+
+" autopairs
+let g:AutoPairs = {
+    \'(':')',
+    \'[':']',
+    \'{':'}',
+    \}
 
 " ==============
 " Auto Commands

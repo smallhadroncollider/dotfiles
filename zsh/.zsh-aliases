@@ -13,7 +13,8 @@ alias casku="brew cu --yes --quiet --cleanup"
 alias vimu="vim +PlugUpgrade +PlugUpdate +PlugClean +qall"
 alias antu="antigen update"
 alias tpmu="$HOME/.tmux/plugins/tpm/bin/update_plugins all"
-alias update="breu && casku && antu && tpmu && composer global update && yarn global upgrade && gem update && vagrant plugin update && vimu && exit"
+alias stku="stack update && stack upgrade"
+alias update="breu && casku && stku & antu && tpmu && composer global update && yarn global upgrade --latest && gem update -Nf && vagrant plugin update && vimu && exit"
 
 # Shell aliases
 alias mkdir="mkdir -p" # Create a directory recursively by default
@@ -94,6 +95,7 @@ alias vi="vim"
 alias vat="cat"
 alias chrome="open -a 'Google Chrome'"
 alias chromeXorigin="killall Google\ Chrome\ Canary 2> /dev/null; open -a Google\ Chrome\ Canary --args -disable-web-security"
+alias ff="open -a Firefox"
 alias diff="icdiff"
 alias rm="trash"
 alias rmdir="trash"

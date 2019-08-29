@@ -39,7 +39,6 @@ cask=(
     caffeine
     dash
     daisydisk
-    divvy
     docker
     expandrive
     fantastical
@@ -62,6 +61,7 @@ cask=(
     sequel-pro
     skype
     slack
+    spectacle
     sublime-text-dev
     superduper
     transmit

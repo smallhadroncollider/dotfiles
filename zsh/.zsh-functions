@@ -184,48 +184,6 @@ register-vms() {
     ls ~/VirtualBox\ VMs/**/*.vbox | while read vm; do VBoxManage registervm "$vm"; done;
 }
 
-# Markdown to Slides
-slides() {
-    md="$1"
-    name=$(echo "$md" | cut -f 1 -d '.')
-    additional="${@:2}"
-    markdown-to-slides -i "$md" -o "$name-slides.html" -l ~/.markdown-to-slides/template-portable.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js additional
-}
-
-slides-local() {
-    md="$1"
-    name=$(echo "$md" | cut -f 1 -d '.')
-    additional="${@:2}"
-    markdown-to-slides -i "$md" -o "$name-slides.html" -l ~/.markdown-to-slides/template-local.html -s ~/.markdown-to-slides/slides.css -j ~/.markdown-to-slides/slides.js additional
-}
-
-
-# markdown to HTML
-html() {
-    file="$1"
-    name=$(echo "$file" | cut -f 1 -d '.')
-    ext="$2" 
-
-    if [ -z "$ext" ]; then
-        display_error "Extension required"
-        return
-    fi
-
-    grip "$file" --export "$name-$ext.html"
-}
-
-# coding fellowship notes/slides
-notes() {
-    for i in *.md; do
-        name=$(echo "$file" | cut -f 1 -d '.')
-        html "$i" "notes"
-        slides "$i"
-        open -a "Google Chrome" "$name-slides.html"
-    done
-
-    open ./
-}
-
 complete() {
     f="$1"
     mv "$HOME/.tmuxinator/$f.yml" "$HOME/.tmuxinator/completed/$f.yml"
@@ -246,4 +204,9 @@ quick_find () {
     dir=$(find /Volumes/Projects -type d -maxdepth 1 | fzf)
     echo "$dir"
     cd $dir
+}
+
+# ssl check
+sslcheck () {
+    echo | openssl s_client -connect "$1":443 2>/dev/null | openssl x509 -noout -dates
 }

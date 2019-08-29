@@ -71,8 +71,8 @@ brew pin python
 yarn global add ${yarn[@]}
 
 # Setup Mackup
-ln -s ~/iCloud/.mackup/.mackup ~/
-ln -s ~/iCloud/.mackup/.mackup.cfg ~/
+ln -s ~/iCloud/.mackup-sync/.mackup ~/
+ln -s ~/iCloud/.mackup-sync/.mackup.cfg ~/
 mackup restore
 
 # Setup ZSH
