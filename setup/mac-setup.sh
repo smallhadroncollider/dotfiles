@@ -1,108 +1,69 @@
 brew=(
     cmake
+    cmt
     composer
     ctags-exuberant
     diff-so-fancy
     exiftool
-    flow
-    fontforge
     git
     git-flow
-    graphviz
     grc
     haskell-stack
     hub
     icdiff
-    libsass
     php
     php-code-sniffer
     pkg-config
-    proselint
-    purescript
-    randomize-lines
-    ranger
     ruby
     shellcheck
     taskell
     terminal-notifier
-    tidy-html5
     tree
     the_silver_searcher
     wget
-    yarn
 )
 
 cask=(
-    adobe-connect
     authy
     backblaze
-    caffeine
     dash
     daisydisk
     docker
-    expandrive
     fantastical
-    fluid
-    flux
     gpg-suite
     google-chrome
-    google-chrome-canary
     istat-menus
-    java
     keybase
-    kitematic
     little-snitch
-    mactex
-    ngrok
-    numi
+    mactex-no-gui
     paw
     qlmarkdown
     quicklook-json
-    sequel-pro
-    skype
     slack
-    spectacle
-    sublime-text-dev
     superduper
-    transmit
-    tunnelbear
     vagrant
     virtualbox
     vmware-fusion
+    visual-studio-code
+    webcatalog
 )
 
-yarn=(
-    babel-cli
-    browser-sync
-    create-react-app
-    csslint
-    eslint
-    eslint-plugin-immutable
+npm=(
     git-recent
-    grunt-cli
-    gulp-cli
     jsonlint
-    loadtest
-    markdown-to-slides
-    pulp
-    karma-cli
+    stylelint
+    stylelint-config-standard
     trash-cli
-    webpack
-    webpack-dev-server
 )
 
 gem=(
     tmuxinator
     bundler
-    scss_lint
-    capistrano
     mdl
 )
 
 composer=(
     "laravel/installer"
-    "vimeo/psalm" # linter - PHP
-    "phan/phan"
 )
 
 pip=(
@@ -125,7 +86,6 @@ vagrant=(
     vagrant-vbguest
     vagrant-hostsupdater
     vagrant-share
-    vagrant-berkshelf
 )
 
 # Install binaries
@@ -144,18 +104,15 @@ do
     brew cask install $i
 done
 
-brew cleanup
-
-for i in "${yarn[@]}"
+for i in "${npm[@]}"
 do
-    yarn global add $i
+    npm install --global $i
 done
 
 gem install ${gem[@]}
 composer global require ${composer[@]}
 
-sudo easy_install pip
-sudo pip install ${pip[@]}
+pip3 install --user ${pip[@]}
 
 for i in "${stack[@]}"
 do
@@ -163,5 +120,3 @@ do
 done
 
 vagrant plugin install ${vagrant[@]}
-
-printf "\n\nCopy across ~/VirtualBox VMs/ and run register-vms\n"

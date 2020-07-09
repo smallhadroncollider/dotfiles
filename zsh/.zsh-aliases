@@ -12,9 +12,10 @@ alias breu="brew update && brew upgrade && brew cleanup"
 alias casku="brew cu --yes --quiet --cleanup"
 alias vimu="vim +PlugUpgrade +PlugUpdate +PlugClean +qall"
 alias antu="antigen update"
+alias npmu="npm update --global"
 alias tpmu="$HOME/.tmux/plugins/tpm/bin/update_plugins all"
 alias stku="stack update && stack upgrade"
-alias update="breu && casku && stku & antu && tpmu && composer global update && yarn global upgrade --latest && gem update -Nf && vagrant plugin update && vimu && exit"
+alias update="breu && casku && stku & antu && tpmu && npmu && composer global update && gem update -Nf && vagrant plugin update && vimu && exit"
 
 # Shell aliases
 alias mkdir="mkdir -p" # Create a directory recursively by default
@@ -23,6 +24,7 @@ alias here="open ./" # Open the cwd in Finder
 # Tmux aliases
 alias list="tmux list-sessions"
 alias kill="tmux kill-session -t $(tmux display-message -p '#S')"
+alias kills="tmux kill-session -t"
 alias new="tmuxinator copy default"
 alias start="tmuxinator start"
 alias switch="tmuxinator switch-client -t"
@@ -43,6 +45,8 @@ alias add="git add --all"
 alias latest="git add --all && git commit -m 'Latest Build'"
 alias init="git init && git flow init"
 alias lastc="git rev-parse HEAD"
+alias tag="git tag | tail -1"
+alias delete-tags="git tag -l | xargs -n 1 git push --delete origin && git tag | xargs git tag -d"
 
 alias amend="git commit --amend --date=\"$(date -R)\""
 alias undo="git reset HEAD@{1}"
@@ -51,8 +55,9 @@ alias wipe="git add -A && git commit -qm 'WIPE SAVE POINT' && git reset HEAD~1 -
 alias co="git checkout"
 alias develop="git checkout develop"
 alias master="git checkout master"
+alias main="git checkout main"
 
-alias stash="git stash -u"
+alias stash="git stash"
 alias unstash="git stash pop"
 
 alias gdiff="git difftool"
@@ -93,6 +98,7 @@ alias shc="ssh shc"
 # Misc
 alias vi="vim"
 alias vat="cat"
+alias subl="code"
 alias chrome="open -a 'Google Chrome'"
 alias chromeXorigin="killall Google\ Chrome\ Canary 2> /dev/null; open -a Google\ Chrome\ Canary --args -disable-web-security"
 alias ff="open -a Firefox"
@@ -115,3 +121,4 @@ alias yoink="open -a Yoink"
 alias server="simplehttp2server -listen ':8000'"
 alias ls="exa -lah --git -s type"
 alias maxima="clear && rlwrap -A maxima -q"
+alias ap="open -a"

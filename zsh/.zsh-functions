@@ -132,18 +132,6 @@ stop () {
     tmux kill-session -t "$(tmux display-message -p '#S')"
 }
 
-# Runs a single command in Vagrant SSH
-vssh () {
-    command="$@"
-    ssh -t vagrant "cd /var/www && $command"
-}
-
-vsshd () {
-    dir="$1"
-    command="${@:2}"
-    ssh -t vagrant "cd /var/www/$1 && $command"
-}
-
 # Finds a given filename in children directories
 where() {
     find . -type f -name "*$1*" -not -path \*node_modules\* | sed 's/^\.\///'
@@ -151,6 +139,11 @@ where() {
 
 infile() {
     find . -type f -exec grep -il "$1" {} \;
+}
+
+archive() {
+    tar --exclude='*.DS_Store' --exclude='*/node_modules/*' --exclude='*/vendor/*' -zcvf "$1.tar.gz" "$1"
+    echo "$1 => $1.tar.gz"
 }
 
 # Number of changed files in git commit

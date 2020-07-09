@@ -9,11 +9,6 @@ sudo scutil --set ComputerName "$niceName"
 read -p "Computer name: " computerName
 sudo scutil --set HostName "$computerName"
 sudo scutil --set LocalHostName "$computerName"
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$computerName"
-
-# Disable Guest account
-defaults write /Library/Preferences/com.apple.AppleFileServer guestAccess -bool NO
-defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server AllowGuestAccess -bool NO
 
 # Allow key repeat
 defaults write -g ApplePressAndHoldEnabled -bool false

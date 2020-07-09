@@ -11,3 +11,4 @@ desktop.ini
 .agignore
 Session.vim
 .undodir
+.cmt.bkp

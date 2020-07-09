@@ -30,7 +30,6 @@ antigen use oh-my-zsh
 # Load plugins
 antigen bundle bower
 antigen bundle capistrano
-antigen bundle composer
 antigen bundle command-not-found
 antigen bundle dirhistory
 antigen bundle docker
@@ -59,7 +58,7 @@ antigen bundle smallhadroncollider/antigen-format-git-commit
 
 # Theme Settings
 prompt_dirp () {
-    local content=`pwd | sed -E -e "s,\/Volumes\/Projects\/?,  ,g" | sed -E -e "s,\/Users\/mark\/?,  ,g"`
+    local content=`pwd | sed -E -e "s,\/Volumes\/Projects\/mark\/?,  ,g" | sed -E -e "s,\/Users\/mark\/?,  ,g"`
     $1_prompt_segment "$0" "$2" "magenta" "black" "$content" "#"
 }
 

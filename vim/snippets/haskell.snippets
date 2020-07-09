@@ -1,9 +1,16 @@
-snippet module
-	{-# LANGUAGE NoImplicitPrelude #-}
-	{-# LANGUAGE OverloadedStrings #-}
-
+snippet moduleClassyPrelude
 	module $1 where
 
 	import ClassyPrelude
 
 	$2
+
+snippet moduleRIO
+	module $1 where
+
+	import RIO
+
+	$2
+
+snippet err
+	{-# OPTIONS_GHC -w #-}

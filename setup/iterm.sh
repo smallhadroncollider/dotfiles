@@ -1,6 +1,6 @@
 taps=(
-    caskroom/versions
-    caskroom/fonts
+    homebrew/cask-versions
+    homebrew/cask-fonts
     buo/cask-upgrade
 )
 
@@ -15,7 +15,6 @@ brew=(
     ripgrep
     tmux
     "vim --with-override-system-vi"
-    yarn
     z
     zsh
     zsh-syntax-highlighting
@@ -28,15 +27,11 @@ cask=(
 )
 
 fonts=(
-    font-firamono-nerd-font
-    font-firacode-nerd-font
-    font-lora
+    font-fira-code-nerd-font
+    font-fira-mono-nerd-font
     font-lato
 )
 
-yarn=(
-    tern
-)
 
 # Create iCloud alias
 ln -s ~/Library/Mobile\ Documents/com~apple~CloudDocs ~/iCloud
@@ -66,9 +61,6 @@ do
 done
 
 brew cleanup
-brew pin python
-
-yarn global add ${yarn[@]}
 
 # Setup Mackup
 ln -s ~/iCloud/.mackup-sync/.mackup ~/

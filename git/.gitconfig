@@ -27,19 +27,25 @@
 [diff "exif"]
     textconv = exiftool
 [diff]
-	submodule = log
+    submodule = log
 [status]
-	submoduleSummary = true
+    submoduleSummary = true
 [fetch]
-	recurseSubmodules = on-demand
+    recurseSubmodules = on-demand
 [merge]
     ff = only
+    tool = vimdiff
+    conflictstyle = diff3
+[pull]
+    rebase = true
 [credential]
-	helper = osxkeychain
+    helper = osxkeychain
 [pager]
     diff = diff-so-fancy | less --tabs=4 -RFX
     show = diff-so-fancy | less --tabs=4 -RFX
 [alias]
-	permission-reset = !git diff -p -R --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
+    permission-reset = !git diff -p -R --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
 [submodule]
     fetchJobs = 4
+[mergetool]
+    prompt = false

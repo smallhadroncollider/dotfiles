@@ -16,25 +16,26 @@ Plug 'airblade/vim-gitgutter' " git gutter diff
 Plug 'altercation/vim-colors-solarized' " Solarized Colour Scheme
 Plug 'bling/vim-airline' " airline status bar
 Plug 'bronson/vim-visual-star-search' " better * behaviour
+Plug 'brooth/far.vim' " find and replace
 Plug 'christoomey/vim-tmux-navigator' " vim/tmux window navigation
 Plug 'editorconfig/editorconfig-vim' " EditorConfig support
 Plug 'FooSoft/vim-argwrap', { 'on': 'ArgWrap' } " wrap/unwrap arguments
-Plug 'jiangmiao/auto-pairs' " add matching brackets
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim' " distraction free writing
-Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " code completion
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'SirVer/ultisnips'
 Plug 'tomtom/tcomment_vim' " smart commenting
-Plug 'tpope/vim-fugitive' " git support
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale' " linter
 
 " syntax highlighting
-Plug 'mxw/vim-jsx'
+Plug 'ap/vim-css-color' " highlight css colours
+Plug 'maxmellon/vim-jsx-pretty'
 Plug 'pangloss/vim-javascript' " better javascript
 Plug 'raichoo/purescript-vim'
+Plug 'vmchale/dhall-vim' " dhall
 Plug 'xsbeats/vim-blade'
 
 call plug#end()
@@ -195,14 +196,17 @@ nnoremap ,, A,<Esc>
 " visual block mode
 nnoremap <leader>v <c-v>
 
-" move line up/down
-nnoremap J :m .+1<CR>==
-nnoremap K :m .-2<CR>==
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
+" move line up/down - alt-J / alt-K
+nnoremap ∆ :m .+1<CR>==
+nnoremap ˚ :m .-2<CR>==
+vnoremap ∆ :m '>+1<CR>gv=gv
+vnoremap ˚ :m '<-2<CR>gv=gv
 
 " lambda
 inoremap ¬ λ
+inoremap æ “
+inoremap Æ ”
+inoremap ≠ ×
 
 " hide search results with \/
 nnoremap <silent> <leader>/ :nohlsearch<CR>
@@ -257,11 +261,12 @@ let g:ale_fixers = {
 \   'haskell': ['hfmt']
 \}
 
-let g:ale_linters = {
-\   'javascript': ['eslint', 'flow'],
-\   'haskell': ['stack-ghc', 'hlint'],
-\   'html': ['tidy'],
-\   'md': [],
+let g:ale_linters = #{
+\   javascript: [],
+\   haskell: [],
+\   html: ['tidy'],
+\   markdown: ['mdl', 'markdownlint'],
+\   text: ['chktex'],
 \}
 
 nnoremap ? :ALEDetail<CR>
@@ -270,10 +275,10 @@ nnoremap ? :ALEDetail<CR>
 map <c-p> :Files<CR>
 map <c-o> :Buffers<CR>
 
-let g:fzf_layout = { 'down': '7em' }
+let g:fzf_layout = #{ down: '7em' }
 
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
+let g:fzf_colors = {
+  \ 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
   \ 'hl':      ['fg', 'Comment'],
   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
@@ -284,7 +289,8 @@ let g:fzf_colors =
   \ 'pointer': ['fg', 'Exception'],
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+  \ 'header':  ['fg', 'Comment']
+  \ }
 
 " argwrap
 nnoremap <silent> <leader>a :ArgWrap<CR>
@@ -303,6 +309,7 @@ hi SpellBad cterm=underline ctermfg=5
 map <leader>n :NERDTreeToggle<CR>
 map <leader>f :NERDTreeFind<CR>
 let g:NERDTreeShowHidden=1
+let g:NERDTreeWinSize=25
 let g:NERDTreeIgnore = [
 \    '\.DS_Store[[file]]',
 \    'Session.vim[[file]]',
@@ -312,6 +319,7 @@ let g:NERDTreeIgnore = [
 \   '\.git[[dir]]',
 \   'node_modules[[dir]]',
 \   'bower_components[[dir]]',
+\   '\.phpintel[[dir]]',
 \   'jspm[[dir]]',
 \   'output[[dir]]',
 \   '\.psci_modules[[dir]]',
@@ -320,7 +328,6 @@ let g:NERDTreeIgnore = [
 \   '\.stack-work[[dir]]',
 \   '\.undodir[[dir]]',
 \   'vendor[[dir]]',
-\   '^log[[dir]]',
 \   '\.zip$[[file]]',
 \   '\.gif$[[file]]',
 \   '\.jpg$[[file]]',
@@ -340,13 +347,14 @@ let g:UltiSnipsSnippetsDir = '~/.vim/snippets'
 " goyo
 nnoremap <Tab> :Goyo<CR>
 
-" Grepper
-let g:grepper = {
-    \ 'tools': ['git', 'rg', 'ag'],
-    \}
-nnoremap // :Grepper<cr>
-nmap gs <plug>(GrepperOperator)
-xmap gs <plug>(GrepperOperator)
+" Far
+nnoremap //  :Farf<cr>
+vnoremap //  :Farf<cr>
+
+nnoremap ///  :Farr<cr>
+vnoremap ///  :Farr<cr>
+let g:far#source = 'rg'
+
 
 " autopairs
 let g:AutoPairs = {
@@ -354,6 +362,23 @@ let g:AutoPairs = {
     \'[':']',
     \'{':'}',
     \}
+
+" coc
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
 
 " ==============
 " Auto Commands
