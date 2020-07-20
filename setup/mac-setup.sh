@@ -26,6 +26,8 @@ brew=(
 cask=(
     authy
     backblaze
+    chef-workstation
+    carbon-copy-cloner
     dash
     daisydisk
     docker
@@ -40,7 +42,6 @@ cask=(
     qlmarkdown
     quicklook-json
     slack
-    superduper
     vagrant
     virtualbox
     vmware-fusion
@@ -110,6 +111,10 @@ do
 done
 
 gem install ${gem[@]}
+
+# tmuxinator auto-complete
+wget https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.zsh -O /usr/local/share/zsh/site-functions/_tmuxinator
+
 composer global require ${composer[@]}
 
 pip3 install --user ${pip[@]}

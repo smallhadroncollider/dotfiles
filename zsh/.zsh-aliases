@@ -2,7 +2,7 @@
 # Aliases
 #########################
 
-alias p="cd /Volumes/Projects"
+alias p="cd /Volumes/Projects/mark"
 
 # Function aliases
 alias touch="create"
