@@ -16,7 +16,6 @@ Plug 'airblade/vim-gitgutter' " git gutter diff
 Plug 'altercation/vim-colors-solarized' " Solarized Colour Scheme
 Plug 'bling/vim-airline' " airline status bar
 Plug 'bronson/vim-visual-star-search' " better * behaviour
-Plug 'brooth/far.vim' " find and replace
 Plug 'christoomey/vim-tmux-navigator' " vim/tmux window navigation
 Plug 'editorconfig/editorconfig-vim' " EditorConfig support
 Plug 'FooSoft/vim-argwrap', { 'on': 'ArgWrap' } " wrap/unwrap arguments
@@ -24,6 +23,7 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim' " distraction free writing
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " code completion
+Plug 'samoshkin/vim-find-files' " adds :Find command
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'SirVer/ultisnips'
 Plug 'tomtom/tcomment_vim' " smart commenting
@@ -211,6 +211,15 @@ inoremap ≠ ×
 " hide search results with \/
 nnoremap <silent> <leader>/ :nohlsearch<CR>
 
+" split
+nnoremap <silent> <leader>' :split<CR>
+nnoremap <silent> <leader>5 :vsplit<CR>
+nnoremap <silent> <leader>1 :on<CR>
+nnoremap <silent> <leader>+ :res +5<CR>
+nnoremap <silent> <leader>- :res -5<CR>
+nnoremap <silent> <leader><left> :vertical res +5<CR>
+nnoremap <silent> <leader><right> :vertical res -5<CR>
+
 " search for selected
 vnoremap <leader>* y/<C-R>"<CR>
 
@@ -233,9 +242,16 @@ map <leader>" :s/'/"/g<CR>
 " sort
 map <leader>j :'<,'>sort i<CR>
 
+" increment/decrement
+map <leader>- <C-x>gv
+map <leader>+ <C-a>gv
+
 " =============
 " Plugin Config
 " =============
+
+" highlight code blocks in MarkDown files
+let g:markdown_fenced_languages = ['html', 'haskell', 'php', 'javascript']
 
 " Airline
 set laststatus=2
@@ -258,11 +274,13 @@ let g:ale_php_phpmd_ruleset = 'codesize,design,unusedcode,naming,/Users/mark/.vi
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'javascript': ['eslint'],
-\   'haskell': ['hfmt']
+\   'haskell': ['hindent']
 \}
 
 let g:ale_linters = #{
 \   javascript: [],
+\   typescript: [],
+\   typescriptreact: [],
 \   haskell: [],
 \   html: ['tidy'],
 \   markdown: ['mdl', 'markdownlint'],
@@ -275,25 +293,25 @@ nnoremap ? :ALEDetail<CR>
 map <c-p> :Files<CR>
 map <c-o> :Buffers<CR>
 
-let g:fzf_layout = #{ down: '7em' }
-
-let g:fzf_colors = {
-  \ 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Directory'],
+  \ 'bg':      ['bg', 'Comment'],
   \ 'hl':      ['fg', 'Comment'],
   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
   \ 'hl+':     ['fg', 'Statement'],
   \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
   \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
+  \ 'pointer': ['fg', 'Todo'],
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment']
-  \ }
+  \ 'header':  ['fg', 'Comment'] }
+
 
 " argwrap
 nnoremap <silent> <leader>a :ArgWrap<CR>
+let g:argwrap_padded_braces = '[{('
 
 " Solarized
 syntax enable
@@ -325,7 +343,8 @@ let g:NERDTreeIgnore = [
 \   '\.psci_modules[[dir]]',
 \   '_minted-[[dir]]',
 \   '\.pulp-cache[[dir]]',
-\   '\.stack-work[[dir]]',
+\   '\.stack-*[[dir]]',
+\   'dist-newstyle[[dir]]',
 \   '\.undodir[[dir]]',
 \   'vendor[[dir]]',
 \   '\.zip$[[file]]',
@@ -341,20 +360,14 @@ let g:NERDTreeIgnore = [
 \   '\.toc$[[file]]',
 \]
 
+" :Find
+let g:find_files_findprg = 'rg $* $d'
+
 " UltiSnips
 let g:UltiSnipsSnippetsDir = '~/.vim/snippets'
 
 " goyo
 nnoremap <Tab> :Goyo<CR>
-
-" Far
-nnoremap //  :Farf<cr>
-vnoremap //  :Farf<cr>
-
-nnoremap ///  :Farr<cr>
-vnoremap ///  :Farr<cr>
-let g:far#source = 'rg'
-
 
 " autopairs
 let g:AutoPairs = {
@@ -369,7 +382,14 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+xmap <leader>]  <Plug>(coc-format-selected)
+nmap <leader>]  <Plug>(coc-format-selected)
+
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <expr><C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nnoremap <expr><C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+inoremap <expr><C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<Right>"
+inoremap <expr><C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<Left>"
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -404,6 +424,10 @@ augroup vimrc
 
     " DelimitMate
     au FileType php let b:delimitMate_matchpairs = '(:),[:],{:}'
+
+    " ArgWrap
+    au FileType haskell let b:argwrap_comma_first = 1
+    au FileType haskell let b:argwrap_comma_first_indent = 1
 
     " Spell check
     au FileType markdown,html,txt,tex setlocal spell spelllang=en_gb

@@ -40,12 +40,25 @@
     rebase = true
 [credential]
     helper = osxkeychain
-[pager]
-    diff = diff-so-fancy | less --tabs=4 -RFX
-    show = diff-so-fancy | less --tabs=4 -RFX
 [alias]
     permission-reset = !git diff -p -R --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
 [submodule]
     fetchJobs = 4
 [mergetool]
     prompt = false
+[init]
+    defaultBranch = main
+[pager]
+    diff = delta
+    log = delta
+    reflog = delta
+    show = delta
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    features = side-by-side line-numbers decorations
+    whitespace-error-style = 22 reverse
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    file-decoration-style = none

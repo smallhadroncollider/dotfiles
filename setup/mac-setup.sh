@@ -1,4 +1,5 @@
 brew=(
+    bat
     cmake
     cmt
     composer
@@ -6,6 +7,7 @@ brew=(
     diff-so-fancy
     exiftool
     git
+    git-delta
     git-flow
     grc
     haskell-stack
@@ -26,18 +28,14 @@ brew=(
 cask=(
     authy
     backblaze
-    chef-workstation
     carbon-copy-cloner
     dash
     daisydisk
     docker
     fantastical
     gpg-suite
-    google-chrome
     istat-menus
-    keybase
     little-snitch
-    mactex-no-gui
     paw
     qlmarkdown
     quicklook-json
@@ -75,7 +73,7 @@ pip=(
     yamllint
 )
 
-stack=(
+cabal=(
     ghcid
     hfmt
     hindent
@@ -119,9 +117,11 @@ composer global require ${composer[@]}
 
 pip3 install --user ${pip[@]}
 
-for i in "${stack[@]}"
+cabal update
+
+for i in "${cabal[@]}"
 do
-    stack install $i
+    cabal install $i
 done
 
 vagrant plugin install ${vagrant[@]}

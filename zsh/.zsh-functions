@@ -126,9 +126,6 @@ layout () {
 
 # Stops the current Tmux session and closes any Vagrant/docker machines that might be running
 stop () {
-    git push 2> /dev/null
-    vagrant halt 2> /dev/null
-    docker-compose stop 2> /dev/null
     tmux kill-session -t "$(tmux display-message -p '#S')"
 }
 

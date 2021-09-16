@@ -15,7 +15,6 @@ brew=(
     ripgrep
     tmux
     "vim --with-override-system-vi"
-    z
     zsh
     zsh-syntax-highlighting
 )
@@ -84,6 +83,7 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # create vim directories and install plugins
 mkdir -p "$HOME/.vim/tmp"
+mkdir -p "$HOME/.vim/undo"
 vim +PlugInstall +qall +silent
 
 # open iTerm

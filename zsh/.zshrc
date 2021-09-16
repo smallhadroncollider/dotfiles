@@ -28,7 +28,6 @@ ANTIGEN_BUNDLES="$HOME/.antigen/bundles"
 antigen use oh-my-zsh
 
 # Load plugins
-antigen bundle bower
 antigen bundle capistrano
 antigen bundle command-not-found
 antigen bundle dirhistory
@@ -36,12 +35,11 @@ antigen bundle docker
 antigen bundle extract
 antigen bundle git
 antigen bundle git-flow
-antigen bundle grunt
-antigen bundle laravel5
 antigen bundle man
 antigen bundle node
 antigen bundle npm
 antigen bundle rsync
+antigen bundle rails
 antigen bundle safe-paste
 antigen bundle tmux
 antigen bundle tmuxinator
@@ -49,7 +47,7 @@ antigen bundle vagrant
 antigen bundle vi-mode
 
 antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-completions src
+antigen bundle zsh-users/zsh-completions
 
 antigen bundle smallhadroncollider/antigen-skeleton
 antigen bundle smallhadroncollider/antigen-git-rebase
@@ -58,7 +56,7 @@ antigen bundle smallhadroncollider/antigen-format-git-commit
 
 # Theme Settings
 prompt_dirp () {
-    local content=`pwd | sed -E -e "s,\/Volumes\/Projects\/mark\/?,  ,g" | sed -E -e "s,\/Users\/mark\/?,  ,g"`
+    local content=`pwd | sed -E -e "s,\/Volumes\/Projects\/mark\/?,  ,g" | sed -E -e "s,\/Users\/mark\/?,  ,g" | sed -E -e "s,\/Volumes\/Projects\/clients\/?,  ,g"`
     $1_prompt_segment "$0" "$2" "magenta" "black" "$content" "#"
 }
 
